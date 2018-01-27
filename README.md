@@ -1,2 +1,2 @@
 # calcs
-calculators in html
+Calculators in html format.

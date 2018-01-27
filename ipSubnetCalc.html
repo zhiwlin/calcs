@@ -1,0 +1,367 @@
+<html>
+<head>
+<title>IP Subnet Calculator</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+</head>
+<body><div id="main">
+<div id="content">
+
+      <div id="column2">
+        <h1>IP Subnet Calculator</h1>
+        <a id="wb_section_149" name="wb_section_149"></a>
+<p>The code for this calculator is by Andy Povey.</p>
+<p>Valid mask values: 252, 248, 240, 224, 192, 128, 0</p>
+<div style="clear: both;">&nbsp;</div>
+<a id="wb_section_41" name="wb_section_41"></a>
+<script language="JavaScript"><!--
+
+/* Javascript IP subnet calculator � Andy Povey 2000 */
+
+function calculate(form) {
+
+/* Input */
+
+var ipaddress = (form.ipinput.value);
+var smmask = (form.sminput.value)
+
+/* Check for valid characters */
+
+var validchars = "0123456789.";
+var test = false;
+for (i=0; i<ipaddress.length; i++) {
+var c = 0; 
+test = false;
+while ((c<11) && (test == false)){
+if (ipaddress.charAt(i) == validchars.charAt(c)){
+test = true};
+c = c+1;
+}   
+if (test == false){form.reportbox.value = "Invalid address. IP addresses may only contain numbers and full-stops."; return;};
+}		
+
+for (i=0; i<smmask.length; i++) {
+var c = 0; 
+test = false;
+while ((c<11) && (test == false)){
+if (smmask.charAt(i) == validchars.charAt(c)){
+test = true};
+c = c+1;
+}   
+if (test == false){form.reportbox.value = "Invalid subnet mask. Subnet masks may only contain numbers and full-stops."; return;};
+}
+
+/* Strip numerical data from input string */
+
+var dotpos = new Array(3);
+dotpos[0] = 0;
+dotpos[1] = 0;
+dotpos[2] = 0;    
+var c = -1;   
+for (i = 0; i < ipaddress.length; i++){   
+if (ipaddress.charAt(i) == "."){
+c = ( c + 1);	   
+dotpos[c] = i + 1;
+}   		
+}     
+
+var val1 = parseInt(ipaddress.substring(0,dotpos[0]),10);
+var val2 = parseInt(ipaddress.substring(dotpos[0],dotpos[1]),10);
+var val3 = parseInt(ipaddress.substring(dotpos[1],dotpos[2]),10);
+var val4 = parseInt(ipaddress.substring(dotpos[2],ipaddress.length),10);
+
+dotpos[0] = 0;
+dotpos[1] = 0;
+dotpos[2] = 0;    
+var c = -1;   
+for (i = 0; i < smmask.length; i++){   
+if (smmask.charAt(i) == "."){
+c = ( c + 1);	   
+dotpos[c] = i + 1;
+}            		
+}
+
+var val5 = parseInt(smmask.substring(0,dotpos[0]),10);
+var val6 = parseInt(smmask.substring(dotpos[0],dotpos[1]),10);
+var val7 = parseInt(smmask.substring(dotpos[1],dotpos[2]),10);
+var val8 = parseInt(smmask.substring(dotpos[2],smmask.length),10);  
+
+
+/* Initialize fields */
+
+form.starthost.value = "0.0.0.0"
+form.endhost.value = "0.0.0.0"
+form.numofhosts.value = "0"
+form.subnetaddress.value = "0.0.0.0"
+form.broadcastaddress.value = "0.0.0.0"
+form.networkclass.value = "-"
+form.subsizebits.value = "0"
+form.hostsizebits.value = "0"
+
+/* Declaration of variables */
+
+var val9 = val1
+var val10 = 0  
+var val11 = 0
+var val12 = 0   
+var val13 = val1
+var val14 = 0   
+var val15 = 0
+var val16 = 0
+var val17 = "-" 
+var x = 0
+var ipdec = 0
+var smdec = 0 
+var startdec = 0
+var enddec = 0
+var message1 = "Dotted decimal values must be between 0 and 255"
+var message2 = "The subnet mask is invalid"
+var message3 = "The IP address is unusable as a host address with this subnet mask"
+var message4 = "The subnet mask is invalid"
+var message5 = "The IP address is invalid"
+var message6 = " "
+var message7 = "IP addresses of type 127.x.x.x are unusable as host addresses"    
+var message9 = "Note: "+val1+"."+val2+"."+val3+"."+val4+" is a class B IP address and is normally used with a subnet mask of type 255.255.x.x"
+var message10 = "Note: "+val1+"."+val2+"."+val3+"."+val4+" is a class C IP address and is normally used with a subnet mask of type 255.255.255.x"
+var message11 = "Programming and design by Andy Povey. Email: andypovey@excite.com"
+var message12 = "IP addresses of type 0.x.x.x are unusable as host addresses"
+var message13 = "This is a class D address. It is unusable as a host address."
+var message14 = "This is a class E address. It is unusable as a host address."   
+var output = message11	
+
+
+
+/* Input validation */
+
+if (val1 == 127){form.reportbox.value = message7;return}; 
+if (val1 == 0){form.reportbox.value = message12;return};
+
+if ((val1 > 255) || (val2 > 255) || (val3 > 255) || (val4 > 255)
+|| (val5 > 255) || (val6 > 255) || (val7 > 255) || (val8 > 255))
+{form.reportbox.value = message1; return};      
+
+if (val5 != 255){form.reportbox.value = message2;return};
+
+if ((val6!=00)&&(val6!=128)&&(val6!=192)&&(val6!=224)&&(val6!=240)&&(val6!=248)&&(val6!=252)&&(val6!=254)&&(val6!=255)){form.reportbox.value = message2;return};   
+if ((val7!=00)&&(val7!=128)&&(val7!=192)&&(val7!=224)&&(val7!=240)&&(val7!=248)&&(val7!=252)&&(val7!=254)&&(val7!=255)){form.reportbox.value = message2;return};
+if ((val8!=00)&&(val8!=128)&&(val8!=192)&&(val8!=224)&&(val8!=240)&&(val8!=248)&&(val8!=252)&&(val8!=254)&&(val8!=255)){form.reportbox.value = message2;return};      
+
+if (val6!=255){if ((val7!=0)||(val8!=0)){form.reportbox.value = message4;return}};
+if (val7!=255){if (val8!=0){form.reportbox.value = message4;return}};
+if (val8> 252){form.reportbox.value = message4;return};
+
+/* Conversion from dotted decimal notation to decimal */
+
+smdec = (val6 * 65536) + (val7 * 256) + val8;
+ipdec = (val2 * 65536) + (val3 * 256) + val4;
+
+/* Determination of network address size (n) */
+
+for (t = 2; t < 25; t = t + 1)
+{if (smdec == (16777216 - Math.pow(2,t))) 
+{(n = 32 - t)}}
+
+/* Determination of network class */
+
+if (val1 < 127) {val17 = "A"}
+if ((val1 > 127) && (val1 < 192)) {val17 = "B"}
+if ((val1 > 191) && (val1 < 224)) {val17 = "C"} 
+if ((val1 > 223) && (val1 < 240)) {val17 = "D"}
+if ((val1 > 239) && (val1 < 256)) {val17 = "E"}
+
+/* Validation of IP address according to class */
+
+if ((val17 == "B") && (n <16)){output = message9};
+if ((val17 == "C") && (n <24)){output = message10};
+if (val17 == "D"){form.reportbox.value = message13; return};
+if (val17 == "E"){form.reportbox.value = message14; return};
+
+/* Calculation of range for n >23 */
+
+if (n > 23){
+x = Math.pow(2,(32 - n));
+for (i = - 1;  i < (256 - x);  i = (i + x))
+{if ((val4 >= (i + 1)) && (val4 <= (i + x))) 
+{val12 = (i + 2);
+val16 = (i + (x - 1));
+}     
+}   
+val10 = val2
+val11 = val3
+val14 = val2
+val15 = val3   
+if ((String(String(val2)+val3+(val4)) == String(String(val10)+val11+(val12 - 1))) || (String(String(val2)+val3+(val4)) == String(String(val14)+val15+(val16 + 1))))
+{output = "WARNING:IP address "+val1+"."+val2+"."+val3+"."+val4+" is unusable as a host address with subnet mask "+val5+"."+val6+"."+val7+"."+val8};
+}  
+
+/* Calculation of range for n >=16 AND <24 */
+
+if ((n >= 16) && (n < 24)){
+x = Math.pow(2,(24 - n)); 
+for (i = 0;  i <= (256 - x);  i = (i + x))
+{if ((val3 >= (i)) && (val3 <= (i + x))) 
+{val11 = (i);
+val15 = (i + (x - 1));
+}
+}
+val10 = val2
+val14 = val2
+val12 = 1
+val16 = 254
+if ((String(String(val2)+val3+(val4)) == String(String(val10)+val11+(val12 - 1))) || (String(String(val2)+val3+(val4)) == String(String(val14)+val15+(val16 + 1))))
+{output = "WARNING:IP address "+val1+"."+val2+"."+val3+"."+val4+" is unusable as a host address with subnet mask "+val5+"."+val6+"."+val7+"."+val8};
+}
+
+/* Calculation of range for n >=8 AND <16 */
+
+if ((n >= 8) && (n < 16)){
+x = Math.pow(2,(16 - n));
+for (i = 0;  i <= (256 - x);  i = (i + x))
+{if ((val2 >= (i)) && (val2 <= (i + x))) 
+{val10 = (i);
+val14 = (i + (x - 1));
+}
+}
+val11 = 0
+val15 = 255
+val12 = 1
+val16 = 254
+if ((String(String(val2)+val3+(val4)) == String(String(val10)+val11+(val12 - 1))) || (String(String(val2)+val3+(val4)) == String(String(val14)+val15+(val16 + 1))))
+{output = "WARNING:IP address "+val1+"."+val2+"."+val3+"."+val4+" is unusable as a host address with subnet mask "+val5+"."+val6+"."+val7+"."+val8};
+}     
+
+/* Conversion back to dotted decimal notation 
+
+val15 = Math.floor(startdec/65536)
+val16 = Math.floor((startdec % 65536)/256)
+val11 = Math.floor(startdec % 256)
+val12 = Math.floor(enddec/65536)
+val13 = Math.floor((enddec % 65536)/256)
+val14 = Math.floor(enddec % 256)           */
+
+/* Output */
+
+form.starthost.value = val9+"."+val10+"."+val11+"."+val12
+form.endhost.value = val13+"."+val14+"."+val15+"."+val16
+form.numofhosts.value = (Math.pow(2,(32 - n))-2)
+form.subnetaddress.value = val9+"."+val10+"."+val11+"."+((val12)-1)
+form.broadcastaddress.value = val13+"."+val14+"."+val15+"."+((val16)+1)
+form.subsizebits.value = n
+form.hostsizebits.value = 32 - n
+form.networkclass.value = val17
+form.reportbox.value = output 
+
+}
+
+/* Javascript subnet calculator � Andy Povey 2000 */
+
+// -->
+</script><a id="wb_section_148" name="wb_section_148"></a>
+<div class="formfield">
+
+<form name="FormName" action="(Empty Reference!)" method="get">
+    <table>
+        <tbody>
+            <tr height="28">
+                <td width="8"><spacer width="1" height="20" type="block"></spacer></td>
+                <td width="8" rowspan="14">&nbsp;</td>
+                <td width="355" valign="top" align="left" colspan="2" content="" csheight="22"><span class="bold"><b>Enter IP Address and Subnet Mask</b></span></td>
+                <td width="8" valign="top" align="left" rowspan="14" content="" csheight="22">&nbsp;</td>
+                <td width="353" valign="top" align="left" colspan="2" content="" csheight="22"><span class="bold"><b>Results</b></span></td>
+            </tr>
+            <tr height="1">
+                <td width="8"><spacer width="1" height="1" type="block"></spacer>
+                <spacer width="1" height="1" type="block"></spacer>
+                <spacer width="1" height="20" type="block"></spacer>
+                </td>
+                <td width="149" valign="bottom" align="left"><span class="normal">IP Address</span></td>
+                <td width="204" valign="bottom" align="left"><input type="text" name="ipinput" size="15" maxlength="15" tabindex="1" /></td>
+                <td width="175" valign="bottom" align="left"><span class="normal" style="color:#006000;font-weight:bold;">Start Host Address</span></td>
+                <td width="176" valign="bottom" align="left"><input type="text" value="0.0.0.0" name="starthost" size="15" maxlength="15" /></td>
+            </tr>
+            <tr height="1">
+                <td width="8"><spacer width="1" height="2" type="block"></spacer>
+                <spacer width="1" height="2" type="block"></spacer>
+                <spacer width="1" height="25" type="block"></spacer>
+                </td>
+                <td width="149" valign="bottom" align="left"><span class="normal">Subnet Mask</span></td>
+                <td width="204" valign="bottom" align="left"><input type="text" name="sminput" size="15" maxlength="15" tabindex="2" /></td>
+                <td width="175" valign="bottom" align="left"><span class="normal" style="color:#600000;font-weight:bold;">End Host Address</span></td>
+                <td width="113" valign="bottom" align="left"><input type="text" value="0.0.0.0" name="endhost" size="15" maxlength="15" /></td>
+            </tr>
+            <tr height="3">
+                <td width="8"><spacer width="1" height="3" type="block"></spacer></td>
+                <td width="149" valign="top" align="center">&nbsp;</td>
+                <td width="204" valign="top" align="center">&nbsp;</td>
+                <td width="175" valign="bottom" align="left"><span class="normal">Max No. of Hosts</span></td>
+                <td width="168" valign="bottom" align="left"><input type="text" value="0" name="numofhosts" size="9" maxlength="15" /></td>
+            </tr>
+            <tr height="2">
+                <td width="8" rowspan="2"><spacer width="1" height="2" type="block"></spacer></td>
+            </tr>
+            <tr height="3">
+                <td width="149" valign="top" align="right" rowspan="2"><input type="button" value="Calculate" name="submitButtonName" onclick="calculate(this.form)" /></td>
+                <td width="204" valign="top" align="left" rowspan="2"><input type="reset" value=" Reset " /></td>
+            </tr>
+            <tr height="25">
+                <td width="8"><spacer width="1" height="25" type="block"></spacer></td>
+            </tr>
+            <tr height="3">
+                <td width="8"><spacer width="1" height="3" type="block"></spacer></td>
+                <td width="149" valign="top" align="center" rowspan="2">&nbsp;</td>
+                <td width="204" valign="top" align="center" rowspan="2">&nbsp;</td>
+                <td width="175" valign="bottom" align="left" rowspan="2"><span class="normal">Network Address</span></td>
+                <td width="176" valign="bottom" align="left" rowspan="2"><input type="text" value="0.0.0.0" name="subnetaddress" size="15" maxlength="15" /></td>
+            </tr>
+            <tr height="10">
+                <td width="8"><spacer width="1" height="10" type="block"></spacer></td>
+            </tr>
+            <tr height="17">
+                <td width="8" rowspan="5"><spacer width="1" height="17" type="block"></spacer>
+                <p><spacer width="1" height="3" type="block"></spacer></p>
+                <p><spacer width="1" height="4" type="block"></spacer></p>
+                <p><spacer width="1" height="23" type="block"></spacer></p>
+                <p><spacer width="1" height="3" type="block"></spacer></p>
+                <p><spacer width="1" height="27" type="block"></spacer></p>
+                <p><spacer width="1" height="2" type="block"></spacer></p>
+                <p><spacer width="1" height="26" type="block"></spacer></p>
+                <p><spacer width="1" height="4" type="block"></spacer></p>
+                <p><spacer width="1" height="60" type="block"></spacer></p>
+                </td>
+                <td width="355" valign="middle" align="left" colspan="2" rowspan="5" content="" csheight="22"><span class="bold">Additional Information</span>
+                <p><textarea name="reportbox" cols="33" rows="7" wrap="virtual">To determine range in which an IP address falls enter address and subnet mask (as dotted decimals) in fields above and press &quot;Calculate&quot;. (Requires a version 4.x browser or higher)   </textarea></p>
+                </td>
+            </tr>
+            <tr height="3">
+                <td width="175" valign="bottom" align="left"><span class="normal">Broadcast Address</span></td>
+                <td width="176" valign="bottom" align="left"><input type="text" value="0.0.0.0" name="broadcastaddress" size="15" maxlength="15" /></td>
+            </tr>
+            <tr height="3">
+                <td width="175" valign="bottom" align="left"><span class="normal">Network Class</span></td>
+                <td width="113" valign="bottom" align="left" colspan="1"><input type="text" value="-" name="networkclass" size="1" maxlength="1" /></td>
+            </tr>
+            <tr height="2">
+                <td width="175" valign="bottom" align="left"><span class="normal">Network Address Size</span></td>
+                <td width="113" valign="bottom" align="left" colspan="1"><input type="text" value="0" name="subsizebits" size="2" maxlength="2" />   Bits</td>
+            </tr>
+            <tr height="4">
+                <td width="175" valign="bottom" align="left"><span class="normal">Host Address Size</span></td>
+                <td width="113" valign="bottom" align="left" colspan="1"><input type="text" value="0" name="hostsizebits" size="2" maxlength="2" />   Bits</td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+</div>
+<a id="wb_section_161" name="wb_section_161"></a>
+<br />
+<br />
+     </div>
+    </div>
+
+  </div>
+
+
+</body>
+</html>

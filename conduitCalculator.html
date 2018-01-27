@@ -1,0 +1,558 @@
+<html>
+<head>
+<title>Calculator for Conduit Sizing</title>
+
+<script language="JavaScript">
+<!-- 
+// defines all the cables to be used
+var cableTypes = new Array();
+var cableOD = new Array();
+var cableNumFields;
+
+var rmcType = new Array();
+var rmcArea = new Array();
+
+var emtType = new Array();
+var emtArea = new Array();
+
+var i, j, k; // used for loops
+
+cableTypes.push("FO 12str SMF armored");
+cableOD.push(0.72);
+cableTypes.push("FO 36str SMF armored");
+cableOD.push(0.72);
+cableTypes.push("FO 48str SMF armored");
+cableOD.push(0.78);
+cableTypes.push("FO 2str S/MMF breakout");
+cableOD.push(0.212);
+cableTypes.push("FO 6str S/MMF breakout");
+cableOD.push(0.335);
+cableTypes.push("FO 12str S/MMF breakout");
+cableOD.push(0.425);
+cableTypes.push("FO 24str S/MMF breakout");
+cableOD.push(0.575);
+cableTypes.push("FO 48str S/MMF breakout");
+cableOD.push(0.75);
+cableTypes.push("FO 2str S/MMF rodent resist brkout");
+cableOD.push(0.412);
+cableTypes.push("FO 6str S/MMF rodent resist brkout");
+cableOD.push(0.49);
+cableTypes.push("FO 12str S/MMF rodent resist brkout");
+cableOD.push(0.626);
+cableTypes.push("FO 24str S/MMF rodent resist brkout");
+cableOD.push(0.65);
+cableTypes.push("FO 48str S/MMF rodent resist brkout");
+cableOD.push(0.97);
+cableTypes.push("FO patchcord 3mm");
+cableOD.push(0.118);
+cableTypes.push("Data CAT5e UTP Plenum (ADC)");
+cableOD.push(0.185);
+cableTypes.push("Data CAT5e UTP 24AWG (General)");
+cableOD.push(0.248);
+cableTypes.push("Data CAT5e ScTP 24AWG");
+cableOD.push(0.31);
+cableTypes.push("Data CAT6 UTP 28AWG (Comtran)");
+cableOD.push(0.145);
+cableTypes.push("Data CAT6 UTP Plenum (ADC)");
+cableOD.push(0.212);
+cableTypes.push("Data CAT6 UTP 23AWG (General)");
+cableOD.push(0.272);
+cableTypes.push("Data CAT6 ScTP 24AWG");
+cableOD.push(0.31);
+cableTypes.push("Data T1 2PR 22AWG");
+cableOD.push(0.3);
+cableTypes.push("Copper 2PR 22AWG");
+cableOD.push(0.38);
+cableTypes.push("Copper 2PR 19AWG");
+cableOD.push(0.41);
+cableTypes.push("Copper 3PR 22AWG (mic)");
+cableOD.push(0.295);
+cableTypes.push("Copper 3PR 22AWG (asm)");
+cableOD.push(0.27);
+cableTypes.push("Copper 4PR 22AWG");
+cableOD.push(0.44);
+cableTypes.push("Copper 4PR 19AWG");
+cableOD.push(0.5);
+cableTypes.push("Copper 6PR 22AWG");
+cableOD.push(0.5);
+cableTypes.push("Copper 6PR 19AWG");
+cableOD.push(0.6);
+cableTypes.push("Copper 6PR 16AWG");
+cableOD.push(0.7);
+cableTypes.push("Copper 12PR 22AWG");
+cableOD.push(0.6);
+cableTypes.push("Copper 25PR 24AWG");
+cableOD.push(0.6);
+cableTypes.push("Copper 25PR 22AWG");
+cableOD.push(0.76);
+cableTypes.push("Copper 50PR 24AWG");
+cableOD.push(0.75);
+cableTypes.push("Copper 50PR 22AWG");
+cableOD.push(0.95);
+cableTypes.push("Copper 75PR 22AWG");
+cableOD.push(1.13);
+cableTypes.push("Copper 100PR 24AWG");
+cableOD.push(1.00);
+cableTypes.push("Copper 100PR 22AWG");
+cableOD.push(1.25);
+cableTypes.push("Copper 150PR 22AWG");
+cableOD.push(1.5);
+cableTypes.push("Copper 200PR 24AWG");
+cableOD.push(1.25);
+cableTypes.push("Copper 200PR 22AWG");
+cableOD.push(1.67);
+cableTypes.push("Copper QUAD 22AWG");
+cableOD.push(0.15);
+cableTypes.push("Speaker cable 1PR 18AWG");
+cableOD.push(0.256);
+cableTypes.push("Coax RG6 quad shield plen.");
+cableOD.push(0.273);
+cableTypes.push("Coax RG6 tri shield");
+cableOD.push(0.278);
+cableTypes.push("Coax RG6 quad shield");
+cableOD.push(0.297);
+cableTypes.push("Coax RG59 quad shield plen.");
+cableOD.push(0.235);
+cableTypes.push("Coax RG59 tri shield");
+cableOD.push(0.244);
+cableTypes.push("Coax RG59 quad shield");
+cableOD.push(0.265);
+cableTypes.push("Coax RG11 quad shield plen.");
+cableOD.push(0.38);
+cableTypes.push("Power Superv. 6PR 16AWG");
+cableOD.push(0.8);
+cableTypes.push("Power Superv. 12PR 16AWG");
+cableOD.push(1.17);
+cableTypes.push("Power Superv. 25PR 16AWG");
+cableOD.push(1.6);
+cableTypes.push("Power Superv. 50PR 16AWG");
+cableOD.push(2.12);
+cableTypes.push("Power THHN/THWN 16AWG");
+cableOD.push(0.096);
+cableTypes.push("Power THHN/THWN 14AWG");
+cableOD.push(0.111);
+cableTypes.push("Power THHN/THWN 12AWG");
+cableOD.push(0.130);
+cableTypes.push("Power THHN/THWN 10AWG");
+cableOD.push(0.164);
+cableTypes.push("Power THHN/THWN 8AWG");
+cableOD.push(0.216);
+cableTypes.push("Power THHN/THWN 6AWG");
+cableOD.push(0.254);
+cableTypes.push("Power THHN/THWN 4AWG");
+cableOD.push(0.324);
+cableTypes.push("Power THHN/THWN 2AWG");
+cableOD.push(0.384);
+cableTypes.push("Power THHN/THWN 1AWG");
+cableOD.push(0.446);
+cableTypes.push("Power XHHW 14AWG");
+cableOD.push(0.133);
+cableTypes.push("Power XHHW 12AWG");
+cableOD.push(0.152);
+cableTypes.push("Power XHHW 10AWG");
+cableOD.push(0.176);
+cableTypes.push("Power XHHW 8AWG");
+cableOD.push(0.236);
+cableTypes.push("Power XHHW 6AWG");
+cableOD.push(0.274);
+cableTypes.push("Power XHHW 4AWG");
+cableOD.push(0.322);
+cableTypes.push("Power XHHW 2AWG");
+cableOD.push(0.382);
+cableTypes.push("Power XHHW 1AWG");
+cableOD.push(0.442);
+cableTypes.push("Power RHH/RHW 14AWG");
+cableOD.push(0.193);
+cableTypes.push("Power RHH/RHW 12AWG");
+cableOD.push(0.212);
+cableTypes.push("Power RHH/RHW 10AWG");
+cableOD.push(0.236);
+cableTypes.push("Power RHH/RHW 8AWG");
+cableOD.push(0.326);
+cableTypes.push("Power RHH/RHW 6AWG");
+cableOD.push(0.364);
+cableTypes.push("Power RHH/RHW 4AWG");
+cableOD.push(0.412);
+cableTypes.push("Power RHH/RHW 2AWG");
+cableOD.push(0.472);
+cableTypes.push("Power RHH/RHW 1AWG");
+cableOD.push(0.582);
+
+cableNumFields = cableTypes.length;
+
+rmcType.push("RMC 1/2 in");
+rmcArea.push(0.314);
+rmcType.push("RMC 3/4 in");
+rmcArea.push(0.549);
+rmcType.push("RMC 1 in");
+rmcArea.push(0.887);
+rmcType.push("RMC 1 1/4 in");
+rmcArea.push(1.526);
+rmcType.push("RMC 1 1/2 in");
+rmcArea.push(2.071);
+rmcType.push("RMC 2 in");
+rmcArea.push(3.408);
+rmcType.push("RMC 2 1/2 in");
+rmcArea.push(4.866);
+rmcType.push("RMC 3 in");
+rmcArea.push(7.499);
+rmcType.push("RMC 4 in");
+rmcArea.push(12.882);
+
+emtType.push("EMT 1/2 in");
+emtArea.push(0.304);
+emtType.push("EMT 3/4 in");
+emtArea.push(0.533);
+emtType.push("EMT 1 in");
+emtArea.push(0.864);
+emtType.push("EMT 1 1/4 in");
+emtArea.push(1.496);
+emtType.push("EMT 1 1/2 in");
+emtArea.push(2.036);
+emtType.push("EMT 2 in");
+emtArea.push(3.356);
+emtType.push("EMT 2 1/2 in");
+emtArea.push(5.858);
+emtType.push("EMT 3 in");
+emtArea.push(8.846);
+emtType.push("EMT 4 in");
+emtArea.push(14.753);
+
+function xArea(diameter) {
+	return (Math.PI*diameter*diameter/4);
+}
+
+function cableShowMenu() {
+	var i; // used for loops
+	for(i=0; i<cableNumFields; i++) {
+		document.write("<option value=", i, ">", cableTypes[i], " (OD: ", cableOD[i], " in)</option>\n");
+	}
+	return true;
+}
+
+function condCalculate() {
+	var cables = new Array(3);
+	var cableQuantity = 0;
+	var cableQuantityTemp = 0;
+	var cableArea = 0.0;
+	var cableSize=-1;
+	var condType = document.conduitSizing.condType.value;
+	var condSize;
+	var fillType = new Array(0, 0.53, 0.31, 0.4);
+	var condFill;
+	var i, j; // used for loops
+	var cable4OD;
+	
+	cables[0] = parseInt(document.conduitSizing.cable1Type.value);
+	cables[1] = parseInt(document.conduitSizing.cable2Type.value);
+	cables[2] = parseInt(document.conduitSizing.cable3Type.value);
+	
+	// Calculate the cable areas and cable quantity first
+	if(cables[0] >= 0) {
+		cableQuantityTemp = parseInt(document.conduitSizing.cable1Quantity.value);
+		if(cableQuantityTemp>=0) {
+			cableQuantity += cableQuantityTemp;
+			cableArea += xArea( cableOD[cables[0]] ) * cableQuantityTemp;
+		} else {
+			document.conduitSizing.cable1Quantity.focus();
+			document.conduitSizing.cableTotalNum.value = 0;
+			document.conduitSizing.cableTotalArea.value = 0;
+			document.conduitSizing.condTypeChosen.value = "";
+			document.conduitSizing.minCondSize.value = "";
+			document.conduitSizing.condFill.value = 0;
+			alert("Quantity is incorrect. Please fix");
+			return false;
+		}
+	}
+	if(cables[1] >= 0) {
+		cableQuantityTemp = parseInt(document.conduitSizing.cable2Quantity.value);
+		if(cableQuantityTemp>=0) {
+			cableQuantity += cableQuantityTemp;
+			cableArea += xArea( cableOD[cables[1]] ) * cableQuantityTemp;
+		} else {
+			document.conduitSizing.cable2Quantity.focus();
+			document.conduitSizing.cableTotalNum.value = 0;
+			document.conduitSizing.cableTotalArea.value = 0;
+			document.conduitSizing.condTypeChosen.value = "";
+			document.conduitSizing.minCondSize.value = "";
+			document.conduitSizing.condFill.value = 0;
+			alert("Quantity is incorrect. Please fix");
+			return false;
+		}
+	}
+	if(cables[2] >= 0) {
+		cableQuantityTemp = parseInt(document.conduitSizing.cable3Quantity.value);
+		if(cableQuantityTemp>=0) {
+			cableQuantity += cableQuantityTemp;
+			cableArea += xArea( cableOD[cables[2]] ) * cableQuantityTemp;
+		} else {
+			document.conduitSizing.cable3Quantity.focus();
+			document.conduitSizing.cableTotalNum.value = 0;
+			document.conduitSizing.cableTotalArea.value = 0;
+			document.conduitSizing.condTypeChosen.value = "";
+			document.conduitSizing.minCondSize.value = "";
+			document.conduitSizing.condFill.value = 0;
+			alert("Quantity is incorrect. Please fix");
+			return false;
+		}
+	}
+	cable4OD = parseFloat(document.conduitSizing.cable4OD.value);
+	if(cable4OD > 0) {
+		cableQuantityTemp = parseInt(document.conduitSizing.cable4Quantity.value);
+		if(cableQuantityTemp>=0) {
+			cableQuantity += cableQuantityTemp;
+			cableArea += xArea( cable4OD ) * cableQuantityTemp;
+		} else {
+			document.conduitSizing.cable4Quantity.focus();
+			document.conduitSizing.cableTotalNum.value = 0;
+			document.conduitSizing.cableTotalArea.value = 0;
+			document.conduitSizing.condTypeChosen.value = "";
+			document.conduitSizing.minCondSize.value = "";
+			document.conduitSizing.condFill.value = 0;
+			alert("Quantity is incorrect. Please fix");
+			return false;
+		}
+	}
+	cable5OD = parseFloat(document.conduitSizing.cable5OD.value);
+	if(cable5OD > 0) {
+		cableQuantityTemp = parseInt(document.conduitSizing.cable5Quantity.value);
+		if(cableQuantityTemp>=0) {
+			cableQuantity += cableQuantityTemp;
+			cableArea += xArea( cable5OD ) * cableQuantityTemp;
+		} else {
+			document.conduitSizing.cable5Quantity.focus();
+			document.conduitSizing.cableTotalNum.value = 0;
+			document.conduitSizing.cableTotalArea.value = 0;
+			document.conduitSizing.condTypeChosen.value = "";
+			document.conduitSizing.minCondSize.value = "";
+			document.conduitSizing.condFill.value = 0;
+			alert("Quantity is incorrect. Please fix");
+			return false;
+		}
+	}
+	
+	// now figure out what size conduit to use
+	if(condType=="RMC") {
+		if(cableQuantity==1) condType += " 53% max fill";
+		else if(cableQuantity==2) condType += " 31% max fill";
+		else if(cableQuantity > 2) condType += " 40% max fill";
+		for(i=0; i<rmcArea.length; i++) {
+			j = rmcArea[i] * fillType[Math.min(cableQuantity,3)];
+			if(j>cableArea) {
+				cableSize=i;
+				condSize=rmcType[i] + " (area: " + rmcArea[i] + ")";
+				document.conduitSizing.condFill.style.backgroundColor = "";
+				break;
+			}
+		}
+		condFill = Math.round(cableArea/rmcArea[i]*100) + "%";
+		if( (cableSize==-1) && (cableQuantity>0) ) {
+			document.conduitSizing.cableTotalNum.value = cableQuantity;
+			document.conduitSizing.cableTotalArea.value = cableArea;
+			document.conduitSizing.condTypeChosen.value = condType;
+			document.conduitSizing.minCondSize.value = rmcType[(i-1)] + " (area: " + rmcArea[(i-1)] + ")";
+			document.conduitSizing.condFill.style.backgroundColor = "#ff8888";
+			document.conduitSizing.condFill.value = Math.round(cableArea/rmcArea[(rmcArea.length-1)]*100) + "%";
+			alert("Too many cables. Area exceeded largest available conduit. Please reduce quantity.");
+			return false;
+		}
+	}
+
+	if(condType=="EMT") {
+		if(cableQuantity==1) condType += " 53% max fill";
+		else if(cableQuantity==2) condType += " 31% max fill";
+		else if(cableQuantity > 2) condType += " 40% max fill";
+		for(i=0; i<emtArea.length; i++) {
+			j = emtArea[i] * fillType[Math.min(cableQuantity,3)];
+			if(j>cableArea) {
+				cableSize=i;
+				condSize=emtType[i] + " (area: " + emtArea[i] + ")";
+				document.conduitSizing.condFill.style.backgroundColor = "";
+				break;
+			}
+		}
+		condFill = Math.round(cableArea/emtArea[i]*100) + "%";
+		if( (cableSize==-1) && (cableQuantity>0) ) {
+			document.conduitSizing.cableTotalNum.value = cableQuantity;
+			document.conduitSizing.cableTotalArea.value = cableArea;
+			document.conduitSizing.condTypeChosen.value = condType;
+			document.conduitSizing.minCondSize.value = emtType[(i-1)] + " (area: " + emtArea[(i-1)] + ")";
+			document.conduitSizing.condFill.style.backgroundColor = "#ff8888";
+			document.conduitSizing.condFill.value = Math.round(cableArea/emtArea[(emtArea.length-1)]*100) + "%";
+			alert("Too many cables. Area exceeded largest available conduit. Please reduce quantity.");
+			return false;
+		}
+	}
+
+	document.conduitSizing.cableTotalNum.value = cableQuantity;
+	document.conduitSizing.cableTotalArea.value = cableArea;
+	document.conduitSizing.condTypeChosen.value = condType;
+	document.conduitSizing.minCondSize.value = condSize;
+	document.conduitSizing.condFill.value = condFill;
+	return true;
+}
+
+// -->
+</script>
+
+
+
+</head>
+
+<body>
+<p>
+<h2>Calculator for Conduit Sizing</h2>
+Based on NFPA 70-2005 (National Electrical Code), Chapter 9, Tables 4 and 5. <b>All units in inches</b>.
+<p><font size="-1">Created by CPM Comm. Engineering</font>
+<p>
+<div style="width: 790px;">
+<b>NOTE</b>: actual conduit size to be used on project should be based on project specific requirements and location of conduit run (<i>e.g., if conduit is to be installed across platform ceiling, then a 4" conduit cannot be used due to Program Coordination restrictions</i>). Calculation below provides the smallest conduit that fits the stated cables. To reduce conduit size, you may need to decrease the number of cables to be run in the conduit and possibly install multiple conduits. You may also need to increase the conduit size to meet project-specific constraints.
+<BR><BR>
+For power conductors, make sure appropriate conductor gauge is specified for the rated current. The maximum ampacity of conductor can be found in NEC Annex B, Table B.310. From the table, choose the correct AWG and the insulation used for conductor (Article 310, table 310.13 for insulation details). <b>DON'T forget to multiply by correction factor for ambient temperature!</b>
+</div>
+<p>
+<hr width="50%" align="left">
+<p>
+<form action="POST" name="conduitSizing">
+<table border="1" cellpadding="5" cellspacing="0">
+<tr>
+<td>
+<b>Cable #1</b>
+</td>
+<td>
+Choose cable type:  
+<select name="cable1Type" size=1 onchange="condCalculate();">
+<option value=-1 selected>None</option>
+<script language="JavaScript">
+<!-- 
+cableShowMenu();
+// -->
+</script>
+</select>
+</td>
+<td>
+Enter number of cables: 
+<input type="text" size="3" name="cable1Quantity" value=0 onchange="condCalculate();" onFocus="this.style.background='#a0ffa0';" onBlur="this.style.background='';">
+</td>
+</tr>
+<tr>
+<td>
+<b>Cable #2</b>
+</td>
+<td>
+Choose cable type:  
+<select name="cable2Type" size=1 onchange="condCalculate();">
+<option value=-1 selected>None</option>
+<script language="JavaScript">
+<!-- 
+cableShowMenu();
+// -->
+</script>
+</select>
+</td>
+<td>
+Enter number of cables: 
+<input type="text" size="3" name="cable2Quantity" value=0 onchange="condCalculate();" onFocus="this.style.background='#a0ffa0';" onBlur="this.style.background='';">
+</td>
+</tr>
+<tr>
+<td>
+<b>Cable #3</b>
+</td>
+<td>
+Choose cable type:  
+<select name="cable3Type" size=1 onchange="condCalculate();">
+<option value=-1 selected>None</option>
+<script language="JavaScript">
+<!-- 
+cableShowMenu();
+// -->
+</script>
+</select>
+</td>
+<td>
+Enter number of cables: 
+<input type="text" size="3" name="cable3Quantity" value=0 onchange="condCalculate();" onFocus="this.style.background='#a0ffa0';" onBlur="this.style.background='';">
+</td>
+</tr>
+<tr>
+<td>
+<b>Cable #4</b>
+</td>
+<td>
+Unknown cable type. Enter OD of cable: 
+<input type="text" size="8" name="cable4OD" value=0 onchange="condCalculate();" onFocus="this.style.background='#a0ffa0';" onBlur="this.style.background='';">
+</td>
+<td>
+Enter number of cables: 
+<input type="text" size="3" name="cable4Quantity" value=0 onchange="condCalculate();" onFocus="this.style.background='#a0ffa0';" onBlur="this.style.background='';">
+</td>
+</tr>
+<tr>
+<td>
+<b>Cable #5</b>
+</td>
+<td>
+Unknown cable type. Enter OD of cable: 
+<input type="text" size="8" name="cable5OD" value=0 onchange="condCalculate();" onFocus="this.style.background='#a0ffa0';" onBlur="this.style.background='';">
+</td>
+<td>
+Enter number of cables: 
+<input type="text" size="3" name="cable5Quantity" value=0 onchange="condCalculate();" onFocus="this.style.background='#a0ffa0';" onBlur="this.style.background='';">
+</td>
+</tr>
+<tr>
+<td>
+<b>Conduit type</b>
+</td>
+<td colspan=2>
+Choose conduit type:  
+<select name="condType" size=1 onchange="condCalculate();">
+<option value="RMC" selected>Rigid Metal Conduit (Chap 9, tab 4, art 344)</option>
+<option value="EMT">Electric Metallic Conduit (Chap 9, tab 4, art 358)</option>
+</select>
+</td>
+</tr>
+<tr>
+<td colspan=3>
+<center><input type="button" name="buttonCondCalc" value="Calculate Conduit Size" language="JavaScript" onclick="condCalculate();"></center>
+</td>
+</tr>
+</table>
+<br>
+<table>
+<tr>
+<td>Num cables total:</td>
+<td>
+<input type="text" size="3" name="cableTotalNum">
+</td>
+</tr>
+<tr>
+<td>Cable total area:</td>
+<td>
+<input type="text" size="6" name="cableTotalArea">
+</td>
+</tr>
+<tr>
+<td>Conduit type chosen:</td>
+<td>
+<input type="text" size="15" name="condTypeChosen">
+</td>
+</tr>
+<tr>
+<td>Minimum conduit size:</td>
+<td>
+<input type="text" size="25" name="minCondSize">
+</td>
+</tr>
+<tr>
+<td>Conduit fill %:</td>
+<td>
+<input type="text" size="6" name="condFill">
+</td>
+</tr>
+</table>
+</form>
+
+</body>
+</html>

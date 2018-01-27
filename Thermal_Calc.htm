@@ -1,0 +1,171 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0080)http://www.cooperbline.com/product/ElectricalEnclosures/Thermal/coolcalchome.asp -->
+<HTML><HEAD><TITLE>Electrical Enclosure - Cooling System Calculations</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1"><LINK 
+href="Thermal_Calc_files/style.css" type=text/css rel=stylesheet>
+<SCRIPT language=JavaScript>
+<!--
+  function ValidateForm() {
+ 	//var declarations
+	var strMessage = ""; 
+
+	var objForm = document.frmCalc;
+	
+	//validate required values
+	if (objForm.txtAreaTemp.value == "") 
+		strMessage += "--Area Temperature is required\n";
+	else if (isNaN(objForm.txtAreaTemp.value))
+		strMessage += "--Area Temperature must be numeric\n";
+		
+	if (objForm.txtWatts.value == "") 
+		strMessage += "--Watts is required\n";
+	else if (isNaN(objForm.txtWatts.value))
+		strMessage += "--Watts must be numeric\n";
+		
+	if (objForm.txtHeight.value == "") 
+		strMessage += "--Height is required\n";
+	if (isNaN(objForm.txtHeight.value))
+		strMessage += "--Height must be numeric\n";
+				
+	if (objForm.txtWidth.value == "") 
+		strMessage += "--Width is required\n";
+	if (isNaN(objForm.txtWidth.value))
+		strMessage += "--Width must be numeric\n";
+				
+	if (objForm.txtDepth.value == "") 
+		strMessage += "--Depth is required\n";
+	if (isNaN(objForm.txtDepth.value))
+		strMessage += "--Depth must be numeric\n";
+				
+	if (objForm.lstEnclType.options[objForm.lstEnclType.selectedIndex].value <= 0)
+		strMessage += "--Please select an enclosure type\n";
+		
+	if (objForm.txtMaxTemp.value == "") 
+		strMessage += "--Maximum Temperature is required\n";
+	if (isNaN(objForm.txtMaxTemp.value))
+		strMessage += "--Maximum Temperature must be numeric\n";
+
+	if (objForm.txtMaxTemp.value == objForm.txtAreaTemp.value) 
+		strMessage += "--Area Temperature and Maximum Temperature cannot be equal\n";
+
+	//if there were errors, display the error message
+	if (strMessage != "") {
+		alert ('Please correct the following:\n' + strMessage);
+		return(false);
+ 	}
+	else { //there were no errors
+		return(true);
+	}
+ 
+ }
+
+//-->
+</SCRIPT>
+
+<META content="MSHTML 6.00.2800.1400" name=GENERATOR></HEAD>
+<BODY text=#000000 bgColor=#ffffff><A 
+href="http://www.cooperbline.com/default.asp"><IMG 
+src="Thermal_Calc_files/cprbline126.jpg" align=right border=0></A><SPAN 
+class=Head>Cooper B-Line Electrical Enclosure Cooling System Calculations</SPAN> 
+
+<P align=left>&nbsp;</P>
+<FORM name=frmCalc onsubmit="return ValidateForm()" action=coolcalc.asp 
+method=post>
+<TABLE width="100%" border=0>
+  <TBODY>
+  <TR class=Normal>
+    <TD vAlign=bottom noWrap width="49%" height=24>Enter the highest expected 
+      ambient temperature for the enclosure's location: </TD>
+    <TD vAlign=bottom width="12%" height=24><INPUT class=TextBox 
+      name=txtAreaTemp> </TD>
+    <TD vAlign=bottom width="39%" height=24><B>° F</B></TD></TR>
+  <TR class=Normal>
+    <TD vAlign=bottom noWrap width="49%" height=19>Enter the internal heat 
+      load:<BR></TD>
+    <TD vAlign=bottom width="12%" height=19><INPUT class=TextBox 
+      name=txtWatts> </TD>
+    <TD vAlign=bottom width="39%" height=19><B>Watts</B></TD></TR>
+  <TR class=Normal>
+    <TD vAlign=bottom noWrap width="49%">Is the enclosure outside in direct 
+      sunlight?:<BR></TD>
+    <TD vAlign=bottom width="12%"><INPUT type=radio CHECKED value=yes 
+      name=optOn> Yes <INPUT type=radio value=no name=optOn> No </TD>
+    <TD vAlign=bottom width="39%"></TD></TR>
+  <TR class=Normal>
+    <TD vAlign=bottom noWrap width="49%">Enter the dimensions of the enclosure 
+      in inches:<BR></TD>
+    <TD vAlign=bottom width="12%"><B><INPUT class=TextBox name=txtHeight> 
+    </B></TD>
+    <TD vAlign=bottom width="39%"><B>Height</B></TD></TR>
+  <TR class=Normal>
+    <TD vAlign=bottom noWrap width="49%">&nbsp;</TD>
+    <TD vAlign=bottom width="12%"><B><INPUT class=TextBox name=txtWidth> 
+    </B></TD>
+    <TD vAlign=bottom width="39%"><B>Width</B></TD></TR>
+  <TR class=Normal>
+    <TD vAlign=bottom noWrap width="49%" height=19>&nbsp;</TD>
+    <TD vAlign=bottom width="12%" height=19><B><INPUT class=TextBox 
+      name=txtDepth> </B></TD>
+    <TD vAlign=bottom width="39%" height=19><B>Depth</B></TD></TR>
+  <TR class=Normal>
+    <TD vAlign=bottom noWrap width="49%">Enter the type of enclosure being 
+      used: </TD>
+    <TD vAlign=bottom width="12%"><SELECT class=Select name=lstEnclType> 
+        <OPTION value="" selected>Enclosure Type ----&gt;</OPTION> <OPTION 
+        value="Floor Standing">Floor Standing</OPTION> <OPTION 
+        value="Wall Mount">Wall Mount</OPTION> <OPTION 
+        value="Free Standing">Free Standing</OPTION></SELECT> </TD>
+    <TD vAlign=bottom width="39%"></TD></TR>
+  <TR class=Normal>
+    <TD vAlign=bottom noWrap width="49%">What is the maximum desired 
+      temperature inside the enclosure? :<BR></TD>
+    <TD vAlign=bottom width="12%"><INPUT class=TextBox name=txtMaxTemp> </TD>
+    <TD vAlign=bottom width="39%"><B>° F</B></TD></TR>
+  <TR class=Normal>
+    <TD vAlign=bottom noWrap width="49%">&nbsp;</TD>
+    <TD vAlign=bottom width="12%">&nbsp;</TD>
+    <TD vAlign=bottom width="39%"></TD></TR>
+  <TR class=Normal>
+    <TD vAlign=bottom noWrap width="49%" height=31>
+      <DIV align=right><INPUT class=Button type=submit value=Calculate name=Submit> 
+      </DIV></TD>
+    <TD vAlign=bottom width="12%" height=31><INPUT class=Button type=reset value="Reset Form" name=Reset> 
+</TD>
+    <TD vAlign=bottom width="39%" height=31></TD></TR></TBODY></TABLE></FORM><BR>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD class=Normal vAlign=top width="100%" height=79>
+      <DIV align=center><A 
+      href="http://www.cooperbline.com/product/Calculator/CalcFrames.asp" 
+      target=_blank>Convert º C to º F</A></DIV>
+      <DIV align=center>&nbsp;</DIV>
+      <DIV align=center><A 
+      href="http://www.cooperbline.com/product/ElectricalEnclosures/Thermal/coolcalchome.asp">Cooling 
+      Systems Calculations</A> / <A 
+      href="http://www.cooperbline.com/product/ElectricalEnclosures/Thermal/heatcalchome.asp">Heating 
+      Systems Calculations</A> / <A 
+      href="http://www.cooperbline.com/product/ElectricalEnclosures/Thermal/index.asp">Thermal 
+      Management Calculations Home </A></DIV></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=3 cellPadding=3 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD width="100%">
+      <TABLE cellSpacing=3 cellPadding=3 width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD width="100%">
+            <HR color=#808080 SIZE=1>
+          </TD></TR></TBODY></TABLE>
+      <TABLE cellSpacing=3 cellPadding=3 width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD class=Normal width="100%">Copyright © 2004 Cooper B-Line®, 
+            Inc.&nbsp; All rights reserved.&nbsp;&nbsp;<A 
+            href="http://www.cooperbline.com/Legal.asp" target=_top>Legal 
+            Notices</A><BR>Questions?&nbsp; Please email <A 
+            href="mailto:webmaster@cooperbline.com">webmaster@cooperbline.com<BR></A>618.654.2184&nbsp; 
+            |&nbsp; 509 W. Monroe St.&nbsp; Highland, IL 62249&nbsp; | <A 
+            href="http://www.cooperbline.com/contact/Customer.asp" 
+            target=_top>Customer 
+Service</A></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></BODY></HTML>

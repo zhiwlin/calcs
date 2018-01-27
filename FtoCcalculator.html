@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+  <html>
+  <head>
+  <script language='Javascript'>
+
+//DO NOT REMOVE THIS COPYWRITE INFO!
+//Temperature Conversion Calculator
+//By Daniel C. Peterson
+//Web Winder Website Services, 1997-2003  All Rights Reserved.
+//Distribution, editing or reselling of this script is strictyly prohibited
+//without expressed written permission from Daniel C. Peterson.
+//For commercial grade (professional) versions of this and many other
+//calculators, visit http://www.webwinder.com.
+
+function computeFar(form)
+
+{
+
+   form.farCon.value = parseInt(eval((1.8 * form.cel.value) + 32),10);
+    
+}
+
+function computeCel(form)
+
+{
+    
+   form.celCon.value = parseInt(eval((form.far.value - 32) / 1.8),10);
+
+}
+
+
+function clearForm(form)
+
+{
+
+    
+    form.far.value = "";
+
+    form.celCon.value = "";
+
+    form.cel.value = "";
+
+    form.farCon.value = "";
+
+
+}
+
+</script>
+
+  </head>
+
+  <body>
+  
+  <!-- all the HTML for display -->
+     <form method="post">
+<table BORDER="1" CELLSPACING="0" CELLPADDING="4">
+
+<tr>
+<td align="center" COLSPAN="4">
+<font face='verdana'><big><strong>Temperature Conversion Calculator</strong></big></font>
+</td>
+</tr>
+
+<tr>
+<td COLSPAN="4">
+<font face='arial'><big>This calculator will convert a Fahrenheit
+temperature into its Celsius equivalent -- or visa versa.</big></font>
+
+</td>
+</tr>
+
+<tr>
+<td><font face='arial'><big>Enter Fahrenheit Temperature</big></font></td>
+<td><input TYPE="TEXT" NAME="far" SIZE="6"></td>
+<td><input TYPE="button" VALUE="Compute Celcius Equivalent >>> " onClick="computeCel(this.form)"></td>
+<td><input TYPE="TEXT" NAME="celCon" SIZE="6"></td>
+</tr>
+
+<tr>
+<td><font face='arial'><big>Enter Celcius Temperature</big></font></td>
+<td><input TYPE="TEXT" NAME="cel" SIZE="6"></td>
+<td><input TYPE="button" VALUE="Compute Fahrenheit Equivalent >>>" onClick="computeFar(this.form)"></td>
+<td><input TYPE="TEXT" NAME="farCon" SIZE="6"></td>
+</tr>
+
+
+<tr>
+<td colspan="4" align="center"><input TYPE="reset" VALUE="Reset" onClick="clearForm(this.form)"></td>
+</tr>
+
+<tr>
+<td align="center" COLSPAN="4"><font face='verdana,arial'><small><small>Copyright © 1997-2003<i> <a href='http://www.webwinder.com'>Web Winder Site Traffic Magnets</a></i>. All rights reserved.</small></small></font></td>
+</tr>
+</table>
+</form>     :      :
+          :      :
+          :      :
+  </body>
+  </html>

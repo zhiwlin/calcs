@@ -1,0 +1,320 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0053)http://www.canon.com/bctv/calculator/calculator3.html -->
+<HTML><HEAD><TITLE>Calculate Oblect Dimention, Distance, Focal length (2/3")</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT language=JavaScript>
+<!-- alculate Object Dimension, Distance, Focal length ---
+var caltable = new Array(3);
+
+function calcObj(in1,in2,out1,out2,out3,out4,calno){
+  //input field
+  this.infield = new Array(in1,in2);
+  //output field
+  this.outfield = new Array(out1,out2,out3,out4);
+  //constant value
+  this.cons = new Array(8.8,7.19,9.59,6.4);  	
+  //calculation no
+  this.calcno = calno;
+  
+  return this;  
+}
+
+calcObj.prototype.calc = function(){
+
+		// data ---------------------------------------------
+		var inVal1 = this.infield[0].value;
+		var inVal2 = this.infield[1].value;
+		var ans = 0;
+				
+		if(!this.checkform(inVal1,inVal2)) return;
+		var str = new String();
+		var calno = this.calcno;
+		
+		for(var i=0;i<4;i++){
+			switch(this.calcno){
+			case 0: ans = this.cons[i]*(inVal1/inVal2)*100;	
+				break;
+			case 1: ans = (inVal1/100*inVal2)/this.cons[i];			
+				break;
+			case 2: ans = (this.cons[i]*inVal1)/(inVal2/100);
+				break;
+			default:
+				break;
+			}
+			ans *= 100;
+			str = String(Math.round(ans)/100);
+			this.outfield[i].value = this.format(str);		
+		}
+						
+}
+
+calcObj.prototype.format = function(str){
+		var len = str.length;
+		var pos = str.indexOf(".");
+		if(str != "Infinity"){
+			switch(pos){
+			case -1:
+	 			str += ".00";
+				break;
+			case 0:
+				str = "0" + str;
+		 		len = str.length;
+				pos = str.indexOf(".");
+			default:
+				for(var i=0;i< 3-len+pos;i++){
+					str += "0";
+				} 
+				break;
+			}
+		}
+		return str;
+}
+
+calcObj.prototype.checkform = function(v1,v2) {
+
+	if (v1== null || v1.length==0 || v2== null || v2.length==0 ) {
+           alert("\nempty");
+           return false;
+    }
+	if (isNaN(v1)==true || isNaN(v2)==true){
+           alert("\nnot number");
+           return false;
+	}
+	return true;
+}
+
+function init(){
+	caltable[0] = new calcObj(document.calcform.in11,document.calcform.in12,document.calcform.out11,document.calcform.out12,document.calcform.out13,document.calcform.out10,0);
+	caltable[1] = new calcObj(document.calcform.in21,document.calcform.in22,document.calcform.out21,document.calcform.out22,document.calcform.out23,document.calcform.out20,1);
+	caltable[2] = new calcObj(document.calcform.in31,document.calcform.in32,document.calcform.out31,document.calcform.out32,document.calcform.out33,document.calcform.out30,2);
+}
+
+
+//--------------------------------------------------------->
+</SCRIPT>
+
+<META content="MSHTML 6.00.2800.1264" name=GENERATOR></HEAD>
+<BODY vLink=#666666 aLink=#999999 link=#993300 bgColor=#ffffff leftMargin=0 
+topMargin=0 onload=init(); marginwidth="0" marginheight="0">
+<TABLE cellSpacing=0 cellPadding=0 width=600 border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=41 alt=canon src="Lens_F_Calc_files/canon_logo.gif" 
+      width=120></TD>
+    <TD align=right><IMG height=25 alt="Canon Inc." 
+      src="Lens_F_Calc_files/inc_he_e.gif" width=150></TD></TR></TBODY></TABLE><BR>
+<FORM name=calcform action=# method=post>
+<TABLE cellSpacing=0 cellPadding=0 width=600 border=0>
+  <TBODY>
+  <TR>
+    <TD align=middle>
+      <TABLE cellSpacing=0 cellPadding=0 width="80%" border=0>
+        <TBODY>
+        <TR>
+          <TD><B><FONT size=5>C</FONT><FONT size=5>alculate Object Dimension, 
+            Object Distance, Focal length</FONT></B><BR>If you know 2 figures 
+            among 3, this will calculate the last one.</TD></TR>
+        <TR>
+          <TD align=middle><BR><BR><IMG height=125 
+            src="Lens_F_Calc_files/calculator3.gif" width=307></TD></TR>
+        <TR>
+          <TD><BR>
+            <TABLE cellSpacing=0 cellPadding=2 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD colSpan=3><B><FONT color=#660000>Horizontalobject 
+                  Dimension Calculation</FONT></B><BR>Enter 2 figures in the 
+                  column and click "calculate".</TD></TR>
+              <TR>
+                <TD width="67%" bgColor=#ffe587><FONT size=2>Enter Object 
+                  Distance "<IMG height=12 alt=l src="Lens_F_Calc_files/l.gif" 
+                  width=12>" by meters</FONT></TD>
+                <TD align=right width="15%" bgColor=#ffe587><INPUT size=8 
+                  name=in11> </TD>
+                <TD width="18%" bgColor=#ffe587><FONT 
+              size=2>meters</FONT></TD></TR>
+              <TR>
+                <TD colSpan=3 height=1></TD></TR>
+              <TR>
+                <TD width="67%" bgColor=#ffe587><FONT size=2>Enter Focal 
+                  Length "<IMG height=13 alt=f src="Lens_F_Calc_files/f.gif" 
+                  width=10>" by millimeters</FONT></TD>
+                <TD align=right width="15%" bgColor=#ffe587><INPUT size=8 
+                  name=in12> </TD>
+                <TD width="18%" bgColor=#ffe587><FONT 
+                size=2>millimeters</FONT></TD></TR>
+              <TR>
+                <TD width="67%" bgColor=#ffca66>&nbsp;</TD>
+                <TD align=right width="15%" bgColor=#ffca66>&nbsp;</TD>
+                <TD align=right width="18%" bgColor=#ffca66><INPUT onclick=caltable[0].calc(); type=button value=Calculate name=button> 
+                </TD></TR></TBODY></TABLE><IMG height=8 
+            src="Lens_F_Calc_files/spacer.gif" width=5><BR>
+            <TABLE cellSpacing=1 cellPadding=2 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD width="53%" bgColor=#9fd5e3>&nbsp;</TD>
+                <TD align=middle width="16%" bgColor=#94b2eb><FONT 
+                  size=2>1/2"</FONT></TD>
+                <TD align=middle width="16%" bgColor=#94b2eb><FONT 
+                  size=2>2/3"</FONT></TD>
+                <TD width="15%" bgColor=#94b2eb>&nbsp;</TD></TR>
+              <TR>
+                <TD width="53%" bgColor=#badce8><FONT size=2>Horizontal Object 
+                  Dimensions Standard (4:3)</FONT></TD>
+                <TD align=middle width="16%" bgColor=#a8c7f0><INPUT size=10 
+                  name=out10> </TD>
+                <TD align=middle width="16%" bgColor=#a8c7f0><INPUT size=10 
+                  name=out11> </TD>
+                <TD width="15%" bgColor=#a8c7f0><FONT 
+                size=2>centimeters</FONT></TD></TR>
+              <TR>
+                <TD noWrap width="53%" bgColor=#badce8><FONT size=2>Horizontal 
+                  Object Dimensions Cross Over (4:3)</FONT></TD>
+                <TD align=middle width="16%" bgColor=#a8c7f0>&nbsp; </TD>
+                <TD align=middle width="16%" bgColor=#a8c7f0><INPUT size=10 
+                  name=out12> </TD>
+                <TD width="15%" bgColor=#a8c7f0><FONT 
+                size=2>centimeters</FONT></TD></TR>
+              <TR>
+                <TD width="53%" bgColor=#badce8><FONT size=2>Horizontal Object 
+                  Dimensions Wide screen (16:9)</FONT></TD>
+                <TD align=middle width="16%" bgColor=#a8c7f0>&nbsp; </TD>
+                <TD align=middle width="16%" bgColor=#a8c7f0><INPUT size=10 
+                  name=out13> </TD>
+                <TD width="15%" bgColor=#a8c7f0><FONT 
+                size=2>centimeters</FONT></TD></TR></TBODY></TABLE><BR><BR>
+            <TABLE cellSpacing=0 cellPadding=2 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD colSpan=3><B><FONT color=#660000>Object Distance 
+                  Calculation</FONT></B><BR>Enter 2 figures in the column and 
+                  click "calculate". </TD></TR>
+              <TR>
+                <TD width="67%" bgColor=#ffe587><FONT size=2>Enter Horizontal 
+                  Object Dimension "<IMG height=12 alt=y 
+                  src="Lens_F_Calc_files/y.gif" width=11 align=absMiddle>" by 
+                  centimeters</FONT></TD>
+                <TD align=right width="15%" bgColor=#ffe587><INPUT size=8 
+                  name=in21> </TD>
+                <TD width="18%" bgColor=#ffe587><FONT 
+                size=2>centimeters</FONT></TD></TR>
+              <TR>
+                <TD colSpan=3 height=1></TD></TR>
+              <TR>
+                <TD width="67%" bgColor=#ffe587><FONT size=2>Enter Focal 
+                  Length "<IMG height=13 alt=f src="Lens_F_Calc_files/f.gif" 
+                  width=10>" by millimeters</FONT></TD>
+                <TD align=right width="15%" bgColor=#ffe587><INPUT size=8 
+                  name=in22> </TD>
+                <TD width="18%" bgColor=#ffe587><FONT 
+                size=2>millimeters</FONT></TD></TR>
+              <TR>
+                <TD width="67%" bgColor=#ffca66>&nbsp;</TD>
+                <TD align=right width="15%" bgColor=#ffca66>&nbsp;</TD>
+                <TD align=right width="18%" bgColor=#ffca66><INPUT onclick=caltable[1].calc(); type=button value=Calculate name=button2> 
+                </TD></TR></TBODY></TABLE><IMG height=8 
+            src="Lens_F_Calc_files/spacer.gif" width=5><BR>
+            <TABLE cellSpacing=1 cellPadding=2 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD width="53%" bgColor=#9fd5e3>&nbsp;</TD>
+                <TD align=middle width="16%" bgColor=#94b2eb><FONT 
+                  size=2>1/2"</FONT></TD>
+                <TD align=middle width="16%" bgColor=#94b2eb><FONT 
+                  size=2>2/3"</FONT></TD>
+                <TD width="15%" bgColor=#94b2eb>&nbsp;</TD></TR>
+              <TR>
+                <TD width="53%" bgColor=#badce8><FONT size=2>Object Distance 
+                  Standard (4:3)</FONT></TD>
+                <TD align=middle width="16%" bgColor=#a8c7f0><INPUT size=10 
+                  name=out20> </TD>
+                <TD align=middle width="16%" bgColor=#a8c7f0><INPUT size=10 
+                  name=out21> </TD>
+                <TD width="15%" bgColor=#a8c7f0><FONT 
+              size=2>meters</FONT></TD></TR>
+              <TR>
+                <TD width="53%" bgColor=#badce8><FONT size=2>Object Distance 
+                  Cross Over (4:3)</FONT></TD>
+                <TD align=middle width="16%" bgColor=#a8c7f0>&nbsp; </TD>
+                <TD align=middle width="16%" bgColor=#a8c7f0><INPUT size=10 
+                  name=out22> </TD>
+                <TD width="15%" bgColor=#a8c7f0><FONT 
+              size=2>meters</FONT></TD></TR>
+              <TR>
+                <TD width="53%" bgColor=#badce8><FONT size=2>Object Distance 
+                  Wide screen (16:9)</FONT></TD>
+                <TD align=middle width="16%" bgColor=#a8c7f0>&nbsp; </TD>
+                <TD align=middle width="16%" bgColor=#a8c7f0><INPUT size=10 
+                  name=out23> </TD>
+                <TD width="15%" bgColor=#a8c7f0><FONT 
+              size=2>meters</FONT></TD></TR></TBODY></TABLE><BR><BR>
+            <TABLE cellSpacing=0 cellPadding=2 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD colSpan=3><B><FONT color=#660000>Focal Length 
+                  Calculation</FONT></B><BR>Enter 2 figures in the column and 
+                  click "calculate". </TD></TR>
+              <TR>
+                <TD width="67%" bgColor=#ffe587><FONT size=2>Enter Horizontal 
+                  Object Distance "<IMG height=12 alt=l 
+                  src="Lens_F_Calc_files/l.gif" width=12>" by meters</FONT></TD>
+                <TD align=right width="15%" bgColor=#ffe587><INPUT size=8 
+                  name=in31> </TD>
+                <TD width="18%" bgColor=#ffe587><FONT 
+              size=2>meters</FONT></TD></TR>
+              <TR>
+                <TD colSpan=3 height=1></TD></TR>
+              <TR>
+                <TD width="67%" bgColor=#ffe587><FONT size=2>Enter Horizontal 
+                  Object Dimension "<IMG height=12 alt=y 
+                  src="Lens_F_Calc_files/y.gif" width=11 align=absMiddle>" by 
+                  centimeters</FONT></TD>
+                <TD align=right width="15%" bgColor=#ffe587><INPUT size=8 
+                  name=in32> </TD>
+                <TD width="18%" bgColor=#ffe587><FONT 
+                size=2>centimeters</FONT></TD></TR>
+              <TR>
+                <TD width="67%" bgColor=#ffca66>&nbsp;</TD>
+                <TD align=right width="15%" bgColor=#ffca66>&nbsp;</TD>
+                <TD align=right width="18%" bgColor=#ffca66><INPUT onclick=caltable[2].calc(); type=button value=Calculate name=button3> 
+                </TD></TR></TBODY></TABLE><IMG height=8 
+            src="Lens_F_Calc_files/spacer.gif" width=5><BR>
+            <TABLE cellSpacing=1 cellPadding=2 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD width="53%" bgColor=#9fd5e3>&nbsp;</TD>
+                <TD align=middle width="16%" bgColor=#94b2eb><FONT 
+                  size=2>1/2"</FONT></TD>
+                <TD align=middle width="16%" bgColor=#94b2eb><FONT 
+                  size=2>2/3"</FONT></TD>
+                <TD width="15%" bgColor=#94b2eb>&nbsp;</TD></TR>
+              <TR>
+                <TD width="53%" bgColor=#badce8><FONT size=2>Focal length 
+                  Standard (4:3)</FONT></TD>
+                <TD align=middle width="16%" bgColor=#a8c7f0><INPUT size=10 
+                  name=out30> </TD>
+                <TD align=middle width="16%" bgColor=#a8c7f0><INPUT size=10 
+                  name=out31> </TD>
+                <TD width="15%" bgColor=#a8c7f0><FONT 
+                size=2>millimeters</FONT></TD></TR>
+              <TR>
+                <TD width="53%" bgColor=#badce8><FONT size=2>Focal Length 
+                  Cross Over (4:3)</FONT></TD>
+                <TD align=middle width="16%" bgColor=#a8c7f0>&nbsp; </TD>
+                <TD align=middle width="16%" bgColor=#a8c7f0><INPUT size=10 
+                  name=out32> </TD>
+                <TD width="15%" bgColor=#a8c7f0><FONT 
+                size=2>millimeters</FONT></TD></TR>
+              <TR>
+                <TD width="53%" bgColor=#badce8><FONT size=2>Focal Length Wide 
+                  screen (16:9)</FONT></TD>
+                <TD align=middle width="16%" bgColor=#a8c7f0>&nbsp; </TD>
+                <TD align=middle width="16%" bgColor=#a8c7f0><INPUT size=10 
+                  name=out33> </TD>
+                <TD width="15%" bgColor=#a8c7f0><FONT 
+                size=2>millimeters</FONT></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE><BR>
+<TABLE cellSpacing=2 cellPadding=0 width=600 border=0>
+  <TBODY>
+  <TR align=middle>
+    <TD><A 
+  href="http://www.canon.com/bctv/calculator/top.html">Back</A></TD></TR></TBODY></TABLE></FORM></BODY></HTML>

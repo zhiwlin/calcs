@@ -1,0 +1,321 @@
+<html>
+<head>
+<title>Calculator for Voltage Drops</title>
+
+<script language="JavaScript">
+<!-- 
+// defines all the cables to be used
+var cableTypes = new Array();
+var cableDcOhmKft = new Array();
+var cableAcOhmKft = new Array();
+var cableAmpacity = new Array();
+var numCond = new Array();
+var numCondFactor = new Array();
+var Ta = new Array();
+var TaFactor = new Array();
+var cableNumFields, numCondFields, TaFields;
+
+cableTypes.push("18AWG THHN/THWN/RHH conductor");
+cableDcOhmKft.push(7.95);
+cableAcOhmKft.push(7.95);
+cableAmpacity.push(14);
+cableTypes.push("16AWG THHN/THWN/RHH conductor");
+cableDcOhmKft.push(4.99);
+cableAcOhmKft.push(4.99);
+cableAmpacity.push(18);
+cableTypes.push("14AWG THHN/THWN/RHH conductor");
+cableDcOhmKft.push(3.14);
+cableAcOhmKft.push(3.1);
+cableAmpacity.push(25);
+cableTypes.push("12AWG THHN/THWN/RHH conductor");
+cableDcOhmKft.push(1.98);
+cableAcOhmKft.push(2.0);
+cableAmpacity.push(30);
+cableTypes.push("10AWG THHN/THWN/RHH conductor");
+cableDcOhmKft.push(1.24);
+cableAcOhmKft.push(1.2);
+cableAmpacity.push(40);
+cableTypes.push("8AWG THHN/THWN/RHH conductor");
+cableDcOhmKft.push(0.778);
+cableAcOhmKft.push(0.78);
+cableAmpacity.push(55);
+cableTypes.push("6AWG THHN/THWN/RHH conductor");
+cableDcOhmKft.push(0.491);
+cableAcOhmKft.push(0.49);
+cableAmpacity.push(75);
+cableTypes.push("4AWG THHN/THWN/RHH conductor");
+cableDcOhmKft.push(0.308);
+cableAcOhmKft.push(0.31);
+cableAmpacity.push(95);
+cableTypes.push("3AWG THHN/THWN/RHH conductor");
+cableDcOhmKft.push(0.245);
+cableAcOhmKft.push(0.25);
+cableAmpacity.push(110);
+cableTypes.push("2AWG THHN/THWN/RHH conductor");
+cableDcOhmKft.push(0.194);
+cableAcOhmKft.push(0.20);
+cableAmpacity.push(130);
+cableTypes.push("1AWG THHN/THWN/RHH conductor");
+cableDcOhmKft.push(0.154);
+cableAcOhmKft.push(0.16);
+cableAmpacity.push(150);
+cableTypes.push("1/0 THHN/THWN/RHH conductor");
+cableDcOhmKft.push(0.122);
+cableAcOhmKft.push(0.12);
+cableAmpacity.push(170);
+cableTypes.push("2/0 THHN/THWN/RHH conductor");
+cableDcOhmKft.push(0.0967);
+cableAcOhmKft.push(0.10);
+cableAmpacity.push(195);
+cableTypes.push("3/0 THHN/THWN/RHH conductor");
+cableDcOhmKft.push(0.0766);
+cableAcOhmKft.push(0.079);
+cableAmpacity.push(225);
+cableTypes.push("4/0 THHN/THWN/RHH conductor");
+cableDcOhmKft.push(0.0608);
+cableAcOhmKft.push(0.063);
+cableAmpacity.push(260);
+cableTypes.push("250kcmil THHN/THWN/RHH conductor");
+cableDcOhmKft.push(0.0515);
+cableAcOhmKft.push(0.054);
+cableAmpacity.push(290);
+cableNumFields = cableTypes.length;
+
+numCond.push("1-3 conductors");
+numCondFactor.push(1.0);
+numCond.push("4-6 conductors");
+numCondFactor.push(0.8);
+numCond.push("7-9 conductors");
+numCondFactor.push(0.7);
+numCond.push("10-20 conductors");
+numCondFactor.push(0.5);
+numCond.push("21-30 conductors");
+numCondFactor.push(0.45);
+numCond.push("31-40 conductors");
+numCondFactor.push(0.4);
+numCond.push("41+ conductors");
+numCondFactor.push(0.35);
+numCondFields = numCond.length;
+
+Ta.push("21-25C (70-77F)");
+TaFactor.push(1.04);
+Ta.push("26-30C (78-86F)");
+TaFactor.push(1.0);
+Ta.push("31-35C (87-95F)");
+TaFactor.push(0.96);
+Ta.push("36-40C (96-104F)");
+TaFactor.push(0.91);
+Ta.push("41-45C (105-113F)");
+TaFactor.push(0.87);
+Ta.push("46-50C (114-122F)");
+TaFactor.push(0.82);
+Ta.push("51-55C (123-131F)");
+TaFactor.push(0.76);
+Ta.push("56-60C (132-140F)");
+TaFactor.push(0.71);
+Ta.push("61-70C (141-158F)");
+TaFactor.push(0.58);
+Ta.push("71-80C (159-176F)");
+TaFactor.push(0.41);
+TaFields = Ta.length;
+
+function cableShowMenu() {
+	var i; // used for loops
+	for(i=0; i<cableNumFields; i++) {
+		document.write("<option value=", i, ">", cableTypes[i], " [DC Resist: ", cableDcOhmKft[i], "] [AC Resist: ", cableAcOhmKft[i], "] [Ampacity: ", cableAmpacity[i], "]</option>\n");
+	}
+	return true;
+}
+
+function numCondFactorShowMenu() {
+	var i; // used for loops
+	for(i=0; i<numCondFields; i++) {
+		document.write("<option value=", i, ">", numCond[i], " [Factor: ", numCondFactor[i], "] </option>\n");
+	}
+	return true;
+}
+
+function TaFactorShowMenu() {
+	var i; // used for loops
+	for(i=0; i<TaFields; i++) {
+		document.write("<option value=", i, ">", Ta[i], " [Factor: ", TaFactor[i], "] </option>\n");
+	}
+	return true;
+}
+
+function condCalculate() {
+	var Vo = document.cableVoltCalc.Vo.value;
+	var acdc = document.cableVoltCalc.acdc.value; // 0 = ac, 1 = dc
+	var Io = document.cableVoltCalc.Io.value;
+	var condLength = document.cableVoltCalc.condLength.value;
+	var cableID = document.cableVoltCalc.cableType.value;
+	var condOhm, condAmpacity;
+	var numCondVal = numCondFactor[document.cableVoltCalc.numCondFactorChosen.value];
+	var TaVal = TaFactor[document.cableVoltCalc.TaFactorChosen.value];
+	var moreVal = document.cableVoltCalc.moreFactorChosen.value;
+	var Vdrop, Vfinal, Imax;
+	
+	if( (cableID < 0) || (moreVal == 0) || (condLength == 0) || (Vo == 0) ) { 
+		// document.cableVoltCalc.Vdrop.value="-"; 
+		document.getElementById("Vdrop").innerText="-";
+		document.getElementById("Vdrop").textContent="-";
+		document.getElementById("Vfinal").innerText="-";
+		document.getElementById("Vfinal").textContent="-";
+		document.getElementById("Imax").innerText="-";
+		document.getElementById("Imax").textContent="-";
+		return false;
+	}
+	
+	if(acdc==0) {
+		condOhm = cableAcOhmKft[cableID];
+	} else {
+	 condOhm = cableDcOhmKft[cableID];
+	}
+	condAmpacity = cableAmpacity[cableID];
+	Imax = condAmpacity * numCondVal * TaVal * moreVal;
+	// document.cableVoltCalc.Imax.value=Imax;
+	document.getElementById("Imax").innerText=Imax.toPrecision(4);
+	document.getElementById("Imax").textContent=Imax.toPrecision(4);
+	if(Imax < Io) {
+		document.getElementById("Vdrop").innerText="-";
+		document.getElementById("Vdrop").textContent="-";
+		document.getElementById("Vfinal").innerText="-";
+		document.getElementById("Vfinal").textContent="-";
+		alert("Conductor ampacity cannot support your total current.");
+		return false;
+	}
+	Vdrop = (Io/1000) * condLength * condOhm;
+	// document.cableVoltCalc.Vdrop.value=Vdrop; 
+	Vfinal = Vo - Vdrop;
+	document.getElementById("Vdrop").innerText=Vdrop.toPrecision(4);
+	document.getElementById("Vdrop").textContent=Vdrop.toPrecision(4);
+	if( Vfinal < 0 ) { 
+		document.getElementById("Vfinal").innerText="-";
+		document.getElementById("Vfinal").textContent="-";
+		alert("Voltage drop is larger than starting voltage.");
+		return false;
+	}
+	document.getElementById("Vfinal").innerText=Vfinal.toPrecision(4);
+	document.getElementById("Vfinal").textContent=Vfinal.toPrecision(4);
+	return true;
+}
+
+// -->
+</script>
+
+</head>
+
+<body>
+<p>
+<div style="width: 790px;">
+<h2>Calculator for Voltage Drop (conductor in raceway, cable or buried in earth, 60&deg;C through 90&deg;C)</h2>
+<p><font size="-1"><b>Created by CPM Comm. Engineering</b></font>
+<p>
+</div>
+<p>
+<hr width="50%" align="left">
+<p>
+<form action="POST" name="cableVoltCalc">
+<table border="1" cellpadding="5" cellspacing="0">
+<tr onmouseover="this.style.background='#ccffcc'" onmouseout="this.style.background=''">
+<td><b>Starting voltage (V)</b></td>
+<td><input type="text" size="10" name="Vo" value="120" onchange="condCalculate();" onFocus="this.style.background='#a0ffa0';" onBlur="this.style.background='';"> 
+<select name="acdc" size=1 onchange="condCalculate();">
+<option value="0" selected>VAC</option>
+<option value="1">VDC</option>
+</select>
+</td>
+</tr>
+<tr onmouseover="this.style.background='#ccffcc'" onmouseout="this.style.background=''">
+<td><b>Total current (A)</b></td>
+<td><input type="text" size="10" name="Io" value="0" onchange="condCalculate();" onFocus="this.style.background='#a0ffa0';" onBlur="this.style.background='';"></td>
+</tr>
+<tr onmouseover="this.style.background='#ccffcc'" onmouseout="this.style.background=''">
+<td><b>Total length (ft)</b></td>
+<td><input type="text" size="10" name="condLength" value="0" onchange="condCalculate();" onFocus="this.style.background='#a0ffa0';" onBlur="this.style.background='';"></td>
+</tr>
+<tr onmouseover="this.style.background='#ccffcc'" onmouseout="this.style.background=''">
+<td><b>Conductor size</b></td>
+<td><select name="cableType" size=1 onchange="condCalculate();">
+<option value=-1 selected>None</option>
+<script language="JavaScript">
+<!-- 
+cableShowMenu();
+// -->
+</script>
+</select>
+</td>
+</tr>
+<tr onmouseover="this.style.background='#ccffcc'" onmouseout="this.style.background=''">
+<td><b># of conductors</b></td>
+<td><select name="numCondFactorChosen" size=1 onchange="condCalculate();">
+<script language="JavaScript">
+<!-- 
+numCondFactorShowMenu();
+// -->
+</script>
+</select>
+</td>
+</tr>
+<tr onmouseover="this.style.background='#ccffcc'" onmouseout="this.style.background=''">
+<td><b>Ambient temp.</b></td>
+<td><select name="TaFactorChosen" size=1 onchange="condCalculate();">
+<script language="JavaScript">
+<!-- 
+TaFactorShowMenu();
+// -->
+</script>
+</select>
+</td>
+</tr>
+<tr onmouseover="this.style.background='#ccffcc'" onmouseout="this.style.background=''">
+<td><b>User defined (0 to 1)</b></td>
+<td><input type="text" size="10" name="moreFactorChosen" value="1" onchange="condCalculate();" onFocus="this.style.background='#a0ffa0';" onBlur="this.style.background='';"></td>
+</tr>
+<tr>
+<td colspan=3>
+<center><input type="button" name="buttonCondCalc" value="Calculate Voltage Drop" language="JavaScript" onclick="condCalculate();"></center>
+</td>
+</tr>
+</table>
+<br>
+<div style="width: 790px;">
+<table>
+<!-- <tr>
+<td>Conductor max rating: </td>
+<td><input type="text" size="10" name="Imax"> A</td>
+</tr> -->
+<tr>
+<td>Max ampacity: </td>
+<td><span id="Imax">-</span> A</td>
+</tr>
+<tr>
+<td>Voltage drop: </td>
+<td><span id="Vdrop">-</span> V</td>
+</tr>
+<tr>
+<td>Final voltage: </td>
+<td><span id="Vfinal">-</span> V</td>
+</tr>
+</table>
+</div>
+</form>
+
+<p>
+<hr width="50%" align="left">
+
+<p>
+<div style="width: 790px;">
+Based on NFPA 70-2005 (National Electrical Code): Chapter 9, Tables 8, 9. 
+<br><ul><li>Chapter 3, Article 310.15, Table 310.16 (allowable ampacity). NOTE: ampacity may be changed based on different factors.
+<ul><li>See Table 310.15(B)(2)(a) for adjustment factors when more than 3 conductors are installed in conduit.</li>
+</ul>
+<li>Chapter 9, Table 8 (conductor properties - DC resistance)</li>
+<li>Chapter 9, Table 9 (three single conductors in conduit - AC resistance)</li>
+</ul>
+<p>Conductors installed in free air (Table 310.17), messenger (Table 310.20), or for temp. greater than 90&deg;C (Tables 310.18, 310.19) are not handled by this calculator.
+<p><b>NOTE:</b> For conductors installed in subway environment in conduit, the ambient temp. factor should be chosen to correctly correspond to the max. worst case temp in the conduit (e.g., 41-45&deg;C).
+</div>
+
+</body>
+</html>

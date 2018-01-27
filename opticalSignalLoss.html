@@ -1,0 +1,185 @@
+<html>
+<head>
+<title>Optical Signal Loss Calculator</title>
+
+<style type="text/css">
+table.dashborder {border-style: none none solid none; border-bottom-width:1px;
+border-color:red;}
+</style>
+
+<script language="JavaScript" type="text/javascript">
+<!-- 
+function sigCalc() {
+	var txSigMax, txSigMin, cblLgth, atten, noSpl, splLoss, noConn, connLoss, rxSigMax, rxSigMin;
+	var tempVal;
+	var FtperKM;
+	var tempAns = "";
+	var quitEarly = 0;
+	FTperKM = 3280.84;
+	txSigMax = parseFloat(document.signalForm.txSigMax.value);
+	txSigMin = parseFloat(document.signalForm.txSigMin.value);
+	cblLgth = eval(document.signalForm.cblLgth.value);
+	document.signalForm.cblLgth.value = cblLgth.toFixed(3);
+	atten = parseFloat(document.signalForm.atten.value);
+	noSpl = parseFloat(document.signalForm.noSpl.value);
+	splLoss = parseFloat(document.signalForm.splLoss.value);
+	noConn = parseFloat(document.signalForm.noConn.value);
+	connLoss = parseFloat(document.signalForm.connLoss.value);
+	rxSigMax = parseFloat(document.signalForm.rxSigMax.value);
+	rxSigMin = parseFloat(document.signalForm.rxSigMin.value);
+
+	/* if(txSigMax=="" || txSigMin=="" || cblLgth=="" || atten=="" || noSpl=="" || splLoss=="" || noConn=="" || connLoss=="" || rxSigMax=="" || rxSigMin=="") {
+		document.getElementById('ansVal').innerHTML = "&nbsp;";
+		return false;
+	} */
+	
+	document.getElementById('txSigMax').style.color='black';
+	document.getElementById('txSigMax').style.fontWeight='normal';
+	document.getElementById('txSigMin').style.color='black';
+	document.getElementById('txSigMin').style.fontWeight='normal';
+	document.getElementById('rxSigMax').style.color='black';
+	document.getElementById('rxSigMax').style.fontWeight='normal';
+	document.getElementById('rxSigMin').style.color='black';
+	document.getElementById('rxSigMin').style.fontWeight='normal';
+	if(txSigMax<txSigMin) {
+		tempAns = "Max. transmit cannot be smaller than min. transmit level.";
+		document.getElementById('txSigMax').style.color='red';
+		document.getElementById('txSigMax').style.fontWeight='bold';
+		document.getElementById('txSigMin').style.color='red';
+		document.getElementById('txSigMin').style.fontWeight='bold';
+		quitEarly=1;
+	}
+	if(rxSigMax<rxSigMin) {
+		if(quitEarly==1) tempAns +="<br>";
+		tempAns += "Max. receive cannot be smaller than min. receive level.";
+		document.getElementById('rxSigMax').style.color='red';
+		document.getElementById('rxSigMax').style.fontWeight='bold';
+		document.getElementById('rxSigMin').style.color='red';
+		document.getElementById('rxSigMin').style.fontWeight='bold';
+		quitEarly=1;
+	}
+	if(quitEarly) {
+		document.getElementById('ansVal').innerHTML = tempAns;
+		return false;
+	}
+
+	// total loss across the span
+	tempVal = cblLgth/FTperKM*atten + noSpl*splLoss + noConn*connLoss;
+	// tempVal = Math.round(tempVal * Math.pow(10,4)) / Math.pow(10,4);
+	tempAns = "Total span loss = <b>" + tempVal.toFixed(3) + "</b>\n";
+	tempAns += "<br>Max. rx signal = <b>" + (txSigMax-tempVal).toFixed(3) + "</b>\n";
+	tempAns += "<br>Min. rx signal = <b>" + (txSigMin-tempVal).toFixed(3) + "</b>\n";
+	
+	if ( (txSigMin-tempVal) > rxSigMax) {
+		tempAns += "<br><font color=#aa2020>Receiver will overload</font>. Attenuate signal by <b>" + (txSigMin-tempVal-rxSigMax).toFixed(3) + "</b>\n";
+	} else if ( (txSigMax-tempVal) < rxSigMin) {
+		tempAns += "<br><font color=#aa2020>Signal too low</font>. Boost signal power by <b>" + (rxSigMin - (txSigMax-tempVal)).toFixed(3) + "</b>, shorten distance, reduce splices, or reduce connectors. Signal may be boosted by using higher powered transmitters or higher sensitivity receiver.\n";
+	} else {
+		tempAns += "<br>Signal within receiver sensitivity value.\n";
+	}
+
+	// tempVal = parseFloat(document.signalForm.txSig.value);
+	// tempVal -= eval(document.signalForm.cblLgth.value)/FTperKM*parseFloat(document.signalForm.atten.value);
+	// tempVal -= parseFloat(document.signalForm.noSpl.value)*parseFloat(document.signalForm.splLoss.value);
+	// tempVal -= parseFloat(document.signalForm.noConn.value)*parseFloat(document.signalForm.connLoss.value);
+	// tempVal = Math.round(tempVal * Math.pow(10,4)) / Math.pow(10,4);
+	document.getElementById('ansVal').innerHTML = tempAns;
+	return true;
+}
+
+// -->
+</script>
+
+
+</head>
+
+<body>
+<p>
+<h2>Optical Signal Loss Calculator</h2>
+<p>
+<div style="width: 790px;">
+Type a value in any field, and press TAB key. Other values will be automatically calculated.
+<p><font size="-1">Created by CPM Comm. Engineering</font>
+<p>
+</div>
+<br>
+<form action="POST" name="signalForm">
+<table border="1" cellpadding="3" cellspacing="1">
+<tr onmouseover="this.style.background='#ccffcc'" onmouseout="this.style.background=''">
+<td>Max. Transmit Level (dBm)</td>
+<td>
+<input type="text" size="6" name="txSigMax" id="txSigMax" value="-8" onfocus="this.style.background='#a0ffa0';this.style.color='black';this.style.fontWeight='normal';" onblur="this.style.background='';sigCalc();">
+</td>
+</tr>
+<tr onmouseover="this.style.background='#ccffcc'" onmouseout="this.style.background=''">
+<td>Min. Transmit Level (dBm)</td>
+<td>
+<input type="text" size="6" name="txSigMin" id="txSigMin" value="-15" onfocus="this.style.background='#a0ffa0';this.style.color='black';this.style.fontWeight='normal';" onblur="this.style.background='';sigCalc();">
+</td>
+</tr>
+<tr onmouseover="this.style.background='#ccffcc'" onmouseout="this.style.background=''">
+<td>Cable length (ft)</td>
+<td>
+<input type="text" size="25" name="cblLgth" value="3280.84*1.609"  onChange="sigCalc();" onfocus="this.style.background='#a0ffa0';" onblur="this.style.background='';">
+</td>
+</tr>
+<tr onmouseover="this.style.background='#ccffcc'" onmouseout="this.style.background=''">
+<td>Attenuation (dB/km)</td>
+<td>
+<input type="text" size="6" name="atten" value="0.4" onChange="sigCalc();" onfocus="this.style.background='#a0ffa0';" onblur="this.style.background='';">
+</td>
+</tr>
+<tr onmouseover="this.style.background='#ccffcc'" onmouseout="this.style.background=''">
+<td>No. of splices</td>
+<td>
+<input type="text" size="3" name="noSpl" value="1" onChange="sigCalc();" onfocus="this.style.background='#a0ffa0';" onblur="this.style.background='';">
+</td>
+</tr>
+<tr onmouseover="this.style.background='#ccffcc'" onmouseout="this.style.background=''">
+<td>Per splice loss (dB)</td>
+<td>
+<input type="text" size="6" name="splLoss" value="0.1" onChange="sigCalc();" onfocus="this.style.background='#a0ffa0';" onblur="this.style.background='';">
+</td>
+</tr>
+<tr onmouseover="this.style.background='#ccffcc'" onmouseout="this.style.background=''">
+<td>No. of connectors</td>
+<td>
+<input type="text" size="3" name="noConn" value="2" onChange="sigCalc();" onfocus="this.style.background='#a0ffa0';" onblur="this.style.background='';">
+</td>
+</tr>
+<tr onmouseover="this.style.background='#ccffcc'" onmouseout="this.style.background=''">
+<td>Per connector loss (dB)</td>
+<td>
+<input type="text" size="6" name="connLoss" value="0.5" onChange="sigCalc();" onfocus="this.style.background='#a0ffa0';" onblur="this.style.background='';">
+</td>
+</tr>
+<tr onmouseover="this.style.background='#ccffcc'" onmouseout="this.style.background=''">
+<td>Max. receiver sensitivity (dBm)</td>
+<td>
+<input type="text" size="6" name="rxSigMax" id="rxSigMax" value="-8" onfocus="this.style.background='#a0ffa0';this.style.color='black';this.style.fontWeight='normal';" onblur="this.style.background='';sigCalc();">
+</td>
+</tr>
+<tr onmouseover="this.style.background='#ccffcc'" onmouseout="this.style.background=''">
+<td>Min. receiver sensitivity (dBm)</td>
+<td>
+<input type="text" size="6" name="rxSigMin" id="rxSigMin" value="-31" onfocus="this.style.background='#a0ffa0';this.style.color='black';this.style.fontWeight='normal';" onblur="this.style.background='';sigCalc();">
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<center><input type="button" name="buttonCondCalc" value="Calculate" language="JavaScript" onclick="sigCalc();"></center>
+</td>
+</tr>
+</table>
+<p><blockquote><b>RESULTS:</b>
+<br><div id="ansVal" style="color:Green;width:790px;">&nbsp;</div>
+</blockquote>
+
+</form>
+
+<p>
+<br>NOTE: 3280.84 ft = 1 km, 5280 ft = 1 mile, 1.609 km = 1 mile
+<br>NOTE: in "cable length" field, you can perform basic math (+, -, *, /)
+
+</body>
+</html>

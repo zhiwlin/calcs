@@ -1,0 +1,427 @@
+<html>
+<head>
+<title>Unit Converters</title>
+
+<style type="text/css">
+table.dashborder {border-style: none none solid none; border-bottom-width:1px;
+border-color:red;}
+</style>
+
+<script language="JavaScript" type="text/javascript">
+<!-- 
+function alertMsg(type) {
+	switch(type) {
+		case 'cfm':
+			alert("CFM is measure of air flow. CFM = cubic feet per minute.\n\nTypical desk fan rated at 30-100 CFM.\nTypical data cabinet fan rated at 200-700 CFM.\nTypical subway fan plant rated at 100,000 CFM per fan (most fan plants have 2-4 fans\n    or up to 400,000 CFM).");
+			break;
+		case 'ton':
+			alert("TON is measure of refrigeration.\nMelting Ice at 32 degrees Fahrenheit requires 144 BTU's per pound to become liquid at 32 degrees Fahrenheit. The Refrigeration Ton was defined as the heat ABSORBED by one ton of ice (2000 pounds) causing it to melt completely by the end of one day (24 hours).\n\nRules of thumb (Assuming Usual Ceiling Heights):\n    1 ton of air conditioning for every 400 square feet of floor space.\n    Each ton of air conditioning requires 400 CFM airflow.");
+			break;
+		case 'availmin':
+			alert("Annual downtime measured in minutes.");
+			break;
+	}
+	return true;
+}
+
+function lengthCalc(type) {
+	var tempVal;
+	var INperFT, MMperIN;
+	INperFT = 12;
+	MMperIN = 25.4;
+	switch(type) {
+	case "ft":
+		tempVal = parseFloat(document.unitForm.ftVal.value);
+		document.unitForm.mmVal.value = Math.round( (tempVal*MMperIN*INperFT) * Math.pow(10,3)) / Math.pow(10,3);
+		document.unitForm.inVal.value = Math.round( (tempVal*INperFT) * Math.pow(10,3)) / Math.pow(10,3);
+		break;
+	case "in":
+		tempVal = parseFloat(document.unitForm.inVal.value);
+		document.unitForm.mmVal.value = Math.round( (tempVal*MMperIN) * Math.pow(10,3)) / Math.pow(10,3);
+		document.unitForm.ftVal.value = Math.round( (tempVal/(INperFT)) * Math.pow(10,3)) / Math.pow(10,3);
+		break;
+	case "mm":
+		tempVal = parseFloat(document.unitForm.mmVal.value);
+		document.unitForm.inVal.value = Math.round( (tempVal/MMperIN) * Math.pow(10,3)) / Math.pow(10,3);
+		document.unitForm.ftVal.value = Math.round( (tempVal/(MMperIN*INperFT)) * Math.pow(10,3)) / Math.pow(10,3);
+		break;
+	}
+	return true;
+}
+
+function tempCalc(type) {
+	var tempVal;
+	switch(type) {
+	case "f":
+		tempVal = parseFloat(document.unitForm.fVal.value);
+		document.unitForm.cVal.value = Math.round( ((tempVal-32)/1.8) * Math.pow(10,3)) / Math.pow(10,3);
+		break;
+	case "c":
+		tempVal = parseFloat(document.unitForm.cVal.value);
+		document.unitForm.fVal.value = Math.round( (tempVal*1.8+32) * Math.pow(10,3)) / Math.pow(10,3);
+		break;
+	}
+	return true;
+}
+
+function awgCalc(type) {
+	var tempVal;
+	switch(type) {
+	case "awg":
+		tempVal = parseFloat(document.unitForm.awgVal.value);
+		tempVal = 0.005*Math.pow( 92,(36-tempVal)/39 );
+		document.unitForm.diaVal.value = Math.round( (tempVal) * Math.pow(10,4)) / Math.pow(10,4);
+		break;
+	case "dia":
+		tempVal = parseFloat(document.unitForm.diaVal.value);
+		tempVal = 36 - (39 / Math.log(92)) * Math.log( tempVal/0.005 );
+		document.unitForm.awgVal.value = Math.round( tempVal );
+		break;
+	}
+	return true;
+}
+
+function airflowCalc(type) {
+	var tempVal;
+	switch(type) {
+	case "cfm":
+		tempVal = parseFloat(document.unitForm.cfmVal.value);
+		document.unitForm.m3hrVal.value = Math.round( (tempVal*1.69865) * Math.pow(10,3)) / Math.pow(10,3);
+		break;
+	case "m3hr":
+		tempVal = parseFloat(document.unitForm.m3hrVal.value);
+		document.unitForm.cfmVal.value = Math.round( (tempVal/1.69865) * Math.pow(10,3)) / Math.pow(10,3);
+		break;
+	}
+	return true;
+}
+
+function powerCalc(type) {
+	var tempVal;
+	var WperHP, BTUperW;
+	WperHP = 745.699872;
+	BTUperW = 3.4129;
+	BTUperTON = 12000;
+	switch(type) {
+	case "ton":
+		tempVal = parseFloat(document.unitForm.tonVal.value);
+		document.unitForm.hpVal.value = Math.round( (tempVal/(BTUperW*WperHP/BTUperTON)) * Math.pow(10,3)) / Math.pow(10,3);
+		document.unitForm.wVal.value = Math.round( (tempVal*(BTUperTON/BTUperW)) * Math.pow(10,3)) / Math.pow(10,3);
+		document.unitForm.btuVal.value = Math.round( (tempVal*(BTUperTON)) * Math.pow(10,3)) / Math.pow(10,3);
+		break;
+	case "hp":
+		tempVal = parseFloat(document.unitForm.hpVal.value);
+		document.unitForm.tonVal.value = Math.round( (tempVal*(BTUperW*WperHP/BTUperTON)) * Math.pow(10,3)) / Math.pow(10,3);
+		document.unitForm.wVal.value = Math.round( (tempVal*(WperHP)) * Math.pow(10,3)) / Math.pow(10,3);
+		document.unitForm.btuVal.value = Math.round( (tempVal*(BTUperW*WperHP)) * Math.pow(10,3)) / Math.pow(10,3);
+		break;
+	case "w":
+		tempVal = parseFloat(document.unitForm.wVal.value);
+		document.unitForm.tonVal.value = Math.round( (tempVal*(BTUperW/BTUperTON)) * Math.pow(10,3)) / Math.pow(10,3);
+		document.unitForm.hpVal.value = Math.round( (tempVal/(WperHP)) * Math.pow(10,3)) / Math.pow(10,3);
+		document.unitForm.btuVal.value = Math.round( (tempVal*(BTUperW)) * Math.pow(10,3)) / Math.pow(10,3);
+		break;
+	case "btu":
+		tempVal = parseFloat(document.unitForm.btuVal.value);
+		document.unitForm.tonVal.value = Math.round( (tempVal/(BTUperTON)) * Math.pow(10,3)) / Math.pow(10,3);
+		document.unitForm.hpVal.value = Math.round( (tempVal/(BTUperW*WperHP)) * Math.pow(10,3)) / Math.pow(10,3);
+		document.unitForm.wVal.value = Math.round( (tempVal/(BTUperW)) * Math.pow(10,3)) / Math.pow(10,3);
+		break;
+	}
+	return true;
+}
+
+function availCalc(type) {
+	var tempVal, resultVal;
+	switch(type) {
+	case "a":
+		tempVal = parseFloat(document.unitForm.availVal.value);
+		resultVal = (1 - tempVal/100) * 60 * 24 * 365;
+		document.unitForm.minVal.value = resultVal.toPrecision(7);
+		break;
+	case "m":
+		tempVal = parseFloat(document.unitForm.minVal.value);
+		resultVal = ( 1-(tempVal / (60* 24 * 365) )) * 100;
+		document.unitForm.availVal.value = resultVal.toPrecision(7);
+		break;
+	}
+	return true;
+}
+
+function mtbfCalc(type) {
+	var tempVal, tempaVal, tempfVal, temprVal;
+	tempaVal = parseFloat(document.unitForm.afrVal.value) / 100.0;
+	tempfVal = parseFloat(document.unitForm.farVal.value);
+	temprVal = parseFloat(document.unitForm.rafVal.value);
+	if (tempaVal && tempfVal && !temprVal) {
+		tempVal = tempfVal * (1-tempaVal)/tempaVal;
+		document.unitForm.rafVal.value = tempVal.toPrecision(6);
+	} else if (tempaVal && !tempfVal && temprVal) {
+		tempVal = temprVal * tempaVal/(1-tempaVal);
+		document.unitForm.farVal.value = tempVal.toPrecision(6);
+	} else if (!tempaVal && tempfVal && temprVal) {
+		tempVal = 100 * tempfVal / (tempfVal + temprVal);
+		document.unitForm.afrVal.value = tempVal.toPrecision(6);
+	} else {
+		alert("Two values must be filled in, and third value must be empty.");
+	}
+	return true;
+}
+
+function evalCalc() {
+	var tempVal;
+	tempVal = eval(document.unitForm.evalVal.value);
+	document.getElementById('ansVal').innerHTML = tempVal;
+	return true;
+}
+
+// -->
+</script>
+
+
+</head>
+
+<body>
+<p>
+<h2>Unit Converters</h2>
+<p>
+<div style="width: 790px;">
+Type a value in any field, and press TAB key. Other values will be automatically calculated.
+<br>
+<br>
+For units in <span style="color:red;">red</span>, you can double-click to get an explanation of the unit.
+</div>
+<br>
+<form action="POST" name="unitForm">
+<table border="0" cellpadding="3" cellspacing="0">
+<tr>
+<td colspan="7">
+<table class="dashborder" width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td><b>Length Converter</b>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td>
+<input type="text" size="6" name="ftVal" onChange="lengthCalc('ft');" onfocus="this.style.background='#a0ffa0';" onblur="this.style.background='';">
+</td>
+<td style="text-align:center;">
+ft <==> in
+</td>
+<td>
+<input type="text" size="6" name="inVal" onChange="lengthCalc('in');" onfocus="this.style.background='#a0ffa0';" onblur="this.style.background='';">
+</td>
+<td style="text-align:center;">
+in <==> mm
+</td>
+<td colspan="3">
+<input type="text" size="6" name="mmVal" onChange="lengthCalc('mm');" onfocus="this.style.background='#a0ffa0';" onblur="this.style.background='';">
+</td>
+</tr>
+<tr>
+<td colspan="7">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="7">
+<table class="dashborder" width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td><b>Temperature Converter</b>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td>
+<input type="text" size="6" name="fVal" onChange="tempCalc('f');" onfocus="this.style.background='#a0ffa0';" onblur="this.style.background='';">
+</td>
+<td style="text-align:center;">
+F <==> C
+</td>
+<td>
+<input type="text" size="6" name="cVal" onChange="tempCalc('c');" onfocus="this.style.background='#a0ffa0';" onblur="this.style.background='';">
+</td>
+<td colspan="4">
+&nbsp;
+</td>
+</tr>
+<tr>
+<td colspan="7">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="7">
+<table class="dashborder" width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td><b>AWG to diameter Converter</b> up to #0. For bare copper only - does not include jacket/insulation.
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td>
+<input type="text" size="6" name="awgVal" onChange="awgCalc('awg');" onfocus="this.style.background='#a0ffa0';" onblur="this.style.background='';">
+</td>
+<td style="text-align:center;">
+AWG <==> diameter
+</td>
+<td>
+<input type="text" size="6" name="diaVal" onChange="awgCalc('dia');" onfocus="this.style.background='#a0ffa0';" onblur="this.style.background='';">
+</td>
+<td colspan="4">
+&nbsp;
+</td>
+</tr>
+<tr>
+<td colspan="7">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="7">
+<table class="dashborder" width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td><b>Air Flow Converter</b>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td>
+<input type="text" size="6" name="cfmVal" onChange="airflowCalc('cfm');" onfocus="this.style.background='#a0ffa0';" onblur="this.style.background='';">
+</td>
+<td style="text-align:center;">
+<span onDblClick="alertMsg('cfm');" style="color:red;">CFM</span> <==> m<sup>3</sup>/hr
+</td>
+<td>
+<input type="text" size="6" name="m3hrVal" onChange="airflowCalc('m3hr');" onfocus="this.style.background='#a0ffa0';" onblur="this.style.background='';">
+</td>
+<td colspan="4">&nbsp;</td>
+</tr>
+</tr>
+<tr>
+<td colspan="7">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="7">
+<table class="dashborder" width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td><b>Power Converter</b>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td>
+<input type="text" size="6" name="tonVal" onChange="powerCalc('ton');" onfocus="this.style.background='#a0ffa0';" onblur="this.style.background='';">
+</td>
+<td style="text-align:center;">
+<span onDblClick="alertMsg('ton');" style="color:red;">Ton</span> <==> HP
+</td>
+<td>
+<input type="text" size="6" name="hpVal" onChange="powerCalc('hp');" onfocus="this.style.background='#a0ffa0';" onblur="this.style.background='';">
+</td>
+<td style="text-align:center;">
+HP <==> Watt
+</td>
+<td>
+<input type="text" size="6" name="wVal" onChange="powerCalc('w');" onfocus="this.style.background='#a0ffa0';" onblur="this.style.background='';">
+</td>
+<td style="text-align:center;">
+Watt <==> BTU/hr
+</td>
+<td>
+<input type="text" size="6" name="btuVal" onChange="powerCalc('btu');" onfocus="this.style.background='#a0ffa0';" onblur="this.style.background='';">
+</td>
+</tr>
+<tr>
+<td colspan="7">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="7">
+<table class="dashborder" width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td><b>Availability downtime converter</b>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td>
+<input type="text" size="10" name="availVal" onChange="availCalc('a');" onkeyup="availCalc('a');" onfocus="this.style.background='#a0ffa0';" onblur="this.style.background='';">
+</td>
+<td style="text-align:center;">
+% <==> <span onDblClick="alertMsg('availmin');" style="color:red;">min</span>
+</td>
+<td>
+<input type="text" size="10" name="minVal" onChange="availCalc('m');" onkeyup="availCalc('m');" onfocus="this.style.background='#a0ffa0';" onblur="this.style.background='';">
+</td>
+<td colspan="4">
+&nbsp;
+</td>
+</tr>
+<tr>
+<td colspan="7">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="7">
+<table class="dashborder" width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td><b>Availability MTBF MTTR Converter (Enter 2 values, leave 3rd empty)</b>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td>
+<input type="text" size="10" name="afrVal" onfocus="this.style.background='#a0ffa0';" onblur="this.style.background='';">
+</td>
+<td style="text-align:center;">
+% <==> MTBF hrs
+</td>
+<td>
+<input type="text" size="10" name="farVal" onfocus="this.style.background='#a0ffa0';" onblur="this.style.background='';">
+</td>
+<td style="text-align:center;">
+MTBF <==> MTTR hrs
+</td>
+<td colspan="2">
+<input type="text" size="10" name="rafVal" onfocus="this.style.background='#a0ffa0';" onblur="this.style.background='';">
+</td>
+<td>
+<input type="button" value="Calculate" onclick="mtbfCalc('r');">
+</td>
+</tr>
+<tr>
+<td colspan="7">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="7">
+<table class="dashborder" width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td><b>Simple math evaluator</b> - <font size="-1">Math.PI, Math.E, Math.[ pow(a,b) | exp(a) | log(a) | sqrt(a) | round(a) ]</font>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td colspan="7">
+<input type="text" size="50" name="evalVal" value="6*7" onChange="evalCalc();" onkeyup="evalCalc();" onfocus="document.getElementById('ansVal').style.color='#a0a0a0';this.style.background='#a0ffa0';" onblur="this.style.background='';document.getElementById('ansVal').style.color='Green';">
+ &nbsp; = &nbsp; 
+<span id="ansVal" style="color:Green;font-weight:bold;">42</span>
+</td>
+</tr>
+</table>
+</form>
+
+
+
+
+</body>
+</html>
